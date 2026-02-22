@@ -1,0 +1,13 @@
+@model ToyotaWeb.Models.Car
+
+
+<h2>Delete Car</h2>
+
+<p>Are you sure?</p>
+
+<p>@Model.Name - @Model.Seats</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Name" />
+    <button type="submit">Delete</button>
+</form>

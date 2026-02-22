@@ -1,0 +1,98 @@
+﻿@model List<ToyotaWeb.Models.Car>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+<a asp-action="Index" asp-route-sortOrder="price_asc">
+    @* Giá từ thấp đến cao *@
+</a>
+
+<!-- ===== BANNER ===== -->
+<section class="banner">
+    <img src="~/images/banner/trangchu.jpg" alt="Toyota Banner" class="banner-img" />
+</section>
+
+<section class="filter-box">
+    <form method="get" asp-controller="Car" asp-action="Index">
+
+        <select name="bodyType">
+            <option value="">Kiểu dáng</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="MPV">MPV</option>
+            <option value="Pickup">Pickup</option>
+        </select>
+
+        <select name="seats">
+            <option value="">Số chỗ</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+        </select>
+
+        <select name="fuelType">
+            <option value="">Nhiên liệu</option>
+            <option value="Xăng">Xăng</option>
+            <option value="Dầu">Dầu</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+
+        <select name="origin">
+            <option value="">Xuất xứ</option>
+            <option value="Việt Nam">Việt Nam</option>
+            <option value="Thái Lan">Thái Lan</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="Nhật Bản">Nhật Bản</option>
+        </select>
+
+        <button type="submit">Tìm xe</button>
+
+    </form>
+</section>
+
+<!-- ===== DANH SÁCH XE ===== -->
+<section class="car-list">
+    <h2 class="section-title">Các dòng xe nổi bật</h2>
+
+    <div class="car-grid">
+        @foreach (var car in Model)
+        {
+            var thumbnail = car.CarImages?
+                .FirstOrDefault()?.ImageUrl;
+
+           <div class="car-card">
+    <div class="car-image">
+        <img src="@(thumbnail != null 
+                    ? Url.Content("~/images/cars/" + thumbnail) 
+                    : Url.Content("~/images/no-image.jpg"))"
+             alt="@car.Name" />
+    </div>
+
+    <div class="car-info">
+        <h3>@car.Name</h3>
+
+        <div class="car-actions">
+            <a asp-controller="Car"
+               asp-action="Details"
+               asp-route-slug="@car.Slug"
+               class="btn-detail">
+                Xem chi tiết
+            </a>
+
+            <a asp-controller="Car"
+               asp-action="Estimate"
+               asp-route-id="@car.CarId"
+               class="btn-estimate">
+                Dự toán
+            </a>
+
+            <a asp-controller="Compare"
+               asp-action="Add"
+               asp-route-id="@car.CarId"
+               class="btn-compare">
+                So sánh
+            </a>
+        </div>
+    </div>
+</div>
+}
+}

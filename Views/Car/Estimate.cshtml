@@ -1,0 +1,69 @@
+@model ToyotaWeb.Models.Car
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Dự toán chi phí";
+}
+
+<h1 class="estimate-title">DỰ TOÁN CHI PHÍ</h1>
+
+<div class="estimate-container">
+    <div class="estimate-form">
+        <h3>@Model.Name</h3>
+
+        <label>Giá xe:</label>
+        <!-- Hiển thị đẹp -->
+        <input type="text"
+               id="priceDisplay"
+               value="@Model.Price.ToString("N0", new CultureInfo("vi-VN"))"
+               readonly />
+
+        <!-- Giá thật để JS tính toán -->
+        <input type="hidden" id="price" value="@Model.Price" />
+
+        <label>Trả trước (%):</label>
+        <input type="number" id="downPercent" value="20" />
+
+        <label>Lãi suất (%/năm):</label>
+        <input type="number" id="interest" value="8" />
+
+        <label>Số năm vay:</label>
+        <input type="number" id="years" value="5" />
+
+        <button type="button" onclick="calculateLoan()">Tính toán</button>
+
+        <div id="result" style="margin-top:15px;"></div>
+    </div>
+</div>
+
+<script>
+function formatVND(number) {
+    return number.toLocaleString('vi-VN') + " VNĐ";
+}
+
+function calculateLoan() {
+
+    let price = parseFloat(document.getElementById("price").value);
+    let downPercent = parseFloat(document.getElementById("downPercent").value);
+    let interest = parseFloat(document.getElementById("interest").value) / 100;
+    let years = parseFloat(document.getElementById("years").value);
+
+    if (isNaN(price) || isNaN(downPercent) || isNaN(interest) || isNaN(years)) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    let downPayment = price * downPercent / 100;
+    let loan = price - downPayment;
+
+    // Tính lãi theo cách đơn giản (lãi cố định)
+    let totalInterest = loan * interest * years;
+    let total = loan + totalInterest;
+    let monthly = total / (years * 12);
+
+    document.getElementById("result").innerHTML =
+        "<p><b>Trả trước:</b> " + formatVND(downPayment) + "</p>" +
+        "<p><b>Khoản vay:</b> " + formatVND(loan) + "</p>" +
+        "<p><b>Trả hàng tháng:</b> " + formatVND(Math.round(monthly)) + "</p>";
+}
+</script>

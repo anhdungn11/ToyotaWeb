@@ -1,0 +1,105 @@
+@model ToyotaWeb.Models.Car
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="car-detail-container">
+
+    <div class="car-left">
+
+        @{
+            var mainImage = Model.CarImages?
+                .FirstOrDefault()?.ImageUrl;
+        }
+
+        @if (!string.IsNullOrEmpty(mainImage))
+        {
+            <img src="@Url.Content("~/images/cars/" + mainImage)"        class="main-image"       id="mainImg"      alt="@Model.Name" />
+        }
+        else
+        {
+            <img src="~/images/no-image.jpg" class="main-image"             id="mainImg" alt="No Image" />
+        }
+
+        @* Thêm đoạn này *@
+        @if (Model.CarImages != null && Model.CarImages.Count > 1)
+        {
+            <div class="thumbnail-list">
+                @foreach (var img in Model.CarImages)
+                {
+                    <img src="@Url.Content("~/images/cars/" + img.ImageUrl)"          class="thumb"  onclick="changeImage(this)"
+                         alt="thumbnail" />
+                }
+            </div>
+        }
+
+    </div>
+
+    <div class="car-right">
+        <h1>@Model.Name</h1>
+        <p>@Model.Description</p>
+    </div>
+
+</div>
+
+<hr />
+
+<h2>Phiên bản</h2>
+
+<div class="variant-grid">
+    @if (Model.CarVariants != null && Model.CarVariants.Any(v => v.IsAvailable))
+    {
+        foreach (var variant in Model.CarVariants.Where(v => v.IsAvailable))
+        {
+            <div class="variant-card">
+                <h3>@variant.VariantName</h3>
+                <p>Động cơ: @variant.Engine</p>
+                <p>Hộp số: @variant.Transmission</p>
+                <p>Dẫn động: @variant.DriveType</p>
+
+                <p class="price">
+                    @variant.Price.ToString("N0") VNĐ
+                </p>
+
+                <a asp-controller="Variant"         asp-action="Details"              asp-route-id="@variant.VariantId"   class="btn-detail">
+                    Xem chi tiết
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Hiện chưa có phiên bản khả dụng.</p>
+    }
+</div>
+<script>
+    function changeImage(element) {
+        document.getElementById("mainImg").src = element.src;
+    }
+</script>
+<hr class="my-5" />
+
+<h3>Xem Thêm Các Dòng Xe Khác </h3>
+
+<div class="row">
+    @foreach (var item in ViewBag.RelatedCars as List<Car>)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                <img src="@Url.Content("~/images/" + item.CarImages.First().ImageUrl)"     class="card-img-top"     alt="@item.Name"
+                     style="height:220px; object-fit:cover;" />
+
+
+
+                <div class="card-body">
+                    <h6 class="card-title">@item.Name</h6>
+
+                    <a asp-action="Details" asp-route-slug="@item.Slug" class="btn btn-outline-danger btn-sm">
+                        Xem chi tiết
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    }

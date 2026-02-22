@@ -1,0 +1,86 @@
+@model List<ToyotaWeb.Models.Car>
+@using System.Globalization
+@using ToyotaWeb.Models
+
+@{
+    var culture = new CultureInfo("vi-VN");
+}
+
+<h1 class="compare-title">SO SÁNH XE</h1>
+
+<form method="get">
+    <select name="id1">
+        <option value="">Chọn xe thứ nhất</option>
+        @foreach (var car in Model)
+        {
+            <option value="@car.CarId"
+                    selected="@(ViewBag.Car1 != null && car.CarId == ViewBag.Car1.CarId ? "selected" : null)">
+                @car.Name
+            </option>
+        }
+    </select>
+
+    <select name="id2">
+        <option value="">Chọn xe thứ hai</option>
+        @foreach (var car in Model)
+        {
+            <option value="@car.CarId"
+                    selected="@(ViewBag.Car2 != null && car.CarId == ViewBag.Car2.CarId ? "selected" : null)">
+                @car.Name
+            </option>
+        }
+    </select>
+
+    <button type="submit">So sánh</button>
+</form>
+
+
+@if (ViewBag.Car1 != null && ViewBag.Car2 != null)
+{
+    var car1 = ViewBag.Car1 as Car;
+    var car2 = ViewBag.Car2 as Car;
+
+    <table border="1" width="100%" style="margin-top:30px; text-align:center;">
+        <tr>
+            <th>Thông tin</th>
+            <th>@car1.Name</th>
+            <th>@car2.Name</th>
+        </tr>
+
+        <tr>
+            <td>Hình ảnh</td>
+            <td>
+                @if (!string.IsNullOrEmpty(car1.ImageUrl))
+                {
+                    <img src="@Url.Content(car1.ImageUrl)"
+                         style="width:250px;height:auto;border-radius:8px;" />
+                }
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(car2.ImageUrl))
+                {
+                    <img src="@Url.Content(car2.ImageUrl)"
+                         style="width:250px;height:auto;border-radius:8px;" />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td>Giá</td>
+            <td>@car1.Price.ToString("N0", culture) VNĐ</td>
+            <td>@car2.Price.ToString("N0", culture) VNĐ</td>
+        </tr>
+
+        <tr>
+            <td>Kiểu dáng</td>
+            <td>@car1.BodyType</td>
+            <td>@car2.BodyType</td>
+        </tr>
+
+        <tr>
+            <td>Số chỗ</td>
+            <td>@car1.Seats</td>
+            <td>@car2.Seats</td>
+        </tr>
+    </table>
+}

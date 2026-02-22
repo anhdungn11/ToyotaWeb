@@ -1,0 +1,58 @@
+@model IEnumerable<ToyotaWeb.Models.Car>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Car List</h2>
+
+<a class="btn btn-success mb-3"
+   asp-area="Admin"
+   asp-controller="Car"
+   asp-action="Create">
+   + Create New
+</a>
+
+
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            Car List
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Seats</th> 
+                        <th width="150">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CarId</td>
+                            <td>@item.Name</td>
+                          <td>@item.Price.ToString("C0")</td>
+
+                            <td>@item.Seats</td>
+
+                            <td>
+                                <a asp-area="Admin"   asp-controller="Car"   asp-action="Edit"   asp-route-id="@item.CarId"
+                                   class="btn btn-sm btn-warning">Edit</a>
+
+                                <a asp-area="Admin" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarId"
+                                   class="btn btn-sm btn-danger">Delete</a>
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>

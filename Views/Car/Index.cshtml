@@ -1,0 +1,53 @@
+@model List<Car>
+
+<h2>Kết quả tìm kiếm</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">
+        Không tìm thấy xe phù hợp.
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            var imageUrl = car.CarImages?.FirstOrDefault()?.ImageUrl;
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+
+                    @if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        <img src="@Url.Content("~/images/" + imageUrl)"
+                             class="card-img-top"
+                             alt="@car.Name"
+                             style="height:220px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/images/no-image.png")"
+                             class="card-img-top"
+                             alt="No Image"
+                             style="height:220px; object-fit:cover;" />
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@car.Name</h5>
+                        <p class="card-text">
+                            @car.BodyType - @car.Seats chỗ
+                        </p>
+
+                        <a asp-action="Details"
+                           asp-route-slug="@car.Slug"
+                           class="btn btn-primary mt-auto">
+                            Xem chi tiết
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}

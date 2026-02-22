@@ -1,0 +1,33 @@
+@model ToyotaWeb.Models.LoginViewModel
+
+<h2>Đăng nhập</h2>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+
+        <form asp-action="Login" method="post">
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Mật khẩu</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Đăng nhập
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

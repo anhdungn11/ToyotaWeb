@@ -1,0 +1,23 @@
+@model ToyotaWeb.Models.CarVariant
+
+<h1>@Model.VariantName</h1>
+
+<p><strong>Thuộc xe:</strong> @Model.Car?.Name</p>
+<p><strong>Động cơ:</strong> @Model.Engine</p>
+<p><strong>Hộp số:</strong> @Model.Transmission</p>
+<p><strong>Dẫn động:</strong> @Model.DriveType</p>
+<p><strong>Giá:</strong> @Model.Price.ToString("N0") VNĐ</p>
+
+<hr />
+
+@if (Model.Images != null && Model.Images.Any())
+{
+    foreach (var img in Model.Images)
+    {
+        <img src="@img.ImageUrl" width="200" style="margin:10px;" />
+    }
+}
+else
+{
+    <p>Không có hình ảnh</p>
+}

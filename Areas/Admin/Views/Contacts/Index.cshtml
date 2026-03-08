@@ -1,0 +1,90 @@
+@model List<ToyotaWeb.Models.Contact>
+
+<h2>Quản lý tư vấn</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Xe quan tâm</th>
+            <th>Nội dung</th>
+            <th>Ngày gửi</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>@item.CarName</td>
+                <td>@item.Message</td>
+                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @if (item.IsCalled)
+                    {
+                        <span class="text-success">✔ Đã gọi</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Chưa gọi</span>
+                    }
+                </td>
+                <td>
+                    @if (!item.IsCalled)
+                    {
+                        <form asp-area="Admin"
+                              asp-controller="Contact"
+                              asp-action="MarkAsCalled"
+                              method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="note" value="Đã gọi khách" />
+                            <button type="submit" class="btn btn-success btn-sm">
+                                 Đánh dấu đã gọi
+                            </button>
+                        </form>
+                    }
+
+                    <form asp-area="Admin"
+                          asp-controller="Contact"
+                          asp-action="Delete"
+                          method="post"
+                          style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Xóa
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        <script>
+function showCallBox(id) {
+    document.getElementById("callbox-" + id).style.display = "block";
+}
+
+function saveCall(id) {
+    var note = document.getElementById("note-" + id).value;
+
+    fetch('/Admin/Contacts/MarkAsCalled', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'id=' + id + '&note=' + encodeURIComponent(note)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+</script>
+    </tbody>
+</table>

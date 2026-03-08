@@ -1,0 +1,34 @@
+@model List<Sale>
+
+<h2 class="text-center mb-5">Chọn nhân viên tư vấn</h2>
+
+<div class="row">
+
+@foreach(var item in Model)
+{
+    <div class="col-md-4 mb-4">
+
+        <div class="card text-center shadow">
+
+            <img src="~/images/sales/@item.Image"
+                 class="card-img-top"
+                 style="height:300px;object-fit:cover">
+
+            <div class="card-body">
+
+                <h5>@item.Name</h5>
+
+                <a asp-action="Details"
+                   asp-route-id="@item.Id"
+                   class="btn btn-danger">
+                   Chọn tư vấn
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+</div>

@@ -1,18 +1,93 @@
 @model ToyotaWeb.Models.Car
 
+@{
+    ViewData["Title"] = "Edit Car";
+}
 
-<h2>Edit Car</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Chỉnh sửa xe</h3>
+        </div>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="@Model.CarId" />
+        <div class="card-body">
 
-    <label>Name:</label>
-    <input asp-for="Name" />
-    <br />
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="CarId" />
 
-    <label>Price:</label>
-    <input asp-for="Price" />
-    <br />
+                <div class="row">
 
-    <button type="submit">Update</button>
-</form>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Price" class="form-label"></label>
+                        <input asp-for="Price" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Category" class="form-label"></label>
+                        <input asp-for="Category" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BodyType" class="form-label"></label>
+                        <input asp-for="BodyType" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Seats" class="form-label"></label>
+                        <input asp-for="Seats" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FuelType" class="form-label"></label>
+                        <input asp-for="FuelType" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Origin" class="form-label"></label>
+                        <input asp-for="Origin" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Slug" class="form-label"></label>
+                        <input asp-for="Slug" class="form-control" />
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ImageUrl" class="form-label"></label>
+                        <input asp-for="ImageUrl" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3 d-flex align-items-center">
+                        <div class="form-check mt-4">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label"></label>
+                            </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-success">
+                         Cập nhật
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                         Quay lại
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

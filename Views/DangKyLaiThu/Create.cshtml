@@ -1,0 +1,82 @@
+@model ToyotaWeb.Models.TestDrive
+
+<h2>Đăng ký lái thử</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Create" method="post">
+
+    <div class="form-group">
+        <label>Họ tên</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Số điện thoại</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Dòng xe</label>
+        <select asp-for="CarName" class="form-control">
+            <option value="">-- Chọn xe --</option>
+            @foreach (var car in ViewBag.CarList)
+            {
+                <option value="@car.Name">@car.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CarName" class="text-danger"></span>
+    </div>
+
+    <!-- 🔽 THÊM PHẦN NÀY -->
+    <div class="form-group">
+        <label>Ngày lái thử</label>
+        <input asp-for="TestDate" type="date" class="form-control" />
+        <span asp-validation-for="TestDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Khung giờ</label>
+        <select asp-for="TimeSlot" class="form-control">
+            <option value="">-- Chọn khung giờ --</option>
+            <option>08:00 - 09:00</option>
+            <option>09:00 - 10:00</option>
+            <option>10:00 - 11:00</option>
+            <option>14:00 - 15:00</option>
+            <option>15:00 - 16:00</option>
+        </select>
+        <span asp-validation-for="TimeSlot" class="text-danger"></span>
+    </div>
+   
+
+    <div class="form-group">
+        <label>Ghi chú</label>
+        <textarea asp-for="Note" class="form-control"></textarea>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">
+        Đăng ký
+    </button>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

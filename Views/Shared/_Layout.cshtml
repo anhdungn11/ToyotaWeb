@@ -7,17 +7,93 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
+
 <body>
 
+<header>
 </header>
 
-<main class="container mt-4">
+<main class="mt-4">
     @RenderBody()
 </main>
 
 <partial name="_Footer" />
 
+<!-- ================= CONTACT SECTION ================= -->
+<section class="contact-section text-center py-5">
+
+    <h2 class="mb-4">TRAO ĐỔI VỚI CHÚNG TÔI</h2>
+
+    <div class="contact-phone mb-4">
+        <i class="fa-solid fa-phone"></i> 1800 1524
+        <span class="mx-3">|</span>
+        <i class="fa-solid fa-phone"></i> 0384508388
+    </div>
+
+    <div class="social-icons">
+        <a href="https://facebook.com/Nguyễn Anh Dũng " target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://instagram.com/ng_anhdung11" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+       <a href="https://www.tiktok.com/tik_tok_l0z" target="_blank">
+    <i class="fa-brands fa-tiktok"></i>
+</a>
+    </div>
+
+</section>
+
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+@RenderSection("Scripts", required: false)
+
+<!-- ================= SUPPORT ICON ================= -->
+<div class="support-icons">
+
+    <!-- ICON GỌI -->
+    <div class="support-btn" onclick="toggleSupport()">
+        <i class="fa-solid fa-phone"></i>
+    </div>
+
+    <!-- ICON CHAT -->
+    <div class="support-btn" onclick="toggleChat()">
+        <i class="fa-solid fa-comment"></i>
+    </div>
+
+</div>
+
+<div class="support-popup" id="supportPopup">
+
+    <h5>Cần hỗ trợ tư vấn?</h5>
+
+    <a href="tel:0916001524" class="popup-btn call">
+        📞 Tư vấn ngay
+    </a>
+
+    <a href="/Sale" class="popup-btn sale">
+        👨‍💼 Chọn nhân viên tư vấn
+    </a>
+
+</div>
+
+<script>
+
+function toggleSupport() {
+
+    var popup = document.getElementById("supportPopup");
+
+    if (popup.style.display === "block") {
+        popup.style.display = "none";
+    } else {
+        popup.style.display = "block";
+    }
+
+}
+
+</script>
+
 </body>
 </html>

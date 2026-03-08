@@ -14,20 +14,19 @@
 
         @if (!string.IsNullOrEmpty(mainImage))
         {
-            <img src="@Url.Content("~/images/cars/" + mainImage)"        class="main-image"       id="mainImg"      alt="@Model.Name" />
+            <img src="@Url.Content("~/images/cars/" + mainImage)" class="main-image" id="mainImg" alt="@Model.Name" />
         }
         else
         {
-            <img src="~/images/no-image.jpg" class="main-image"             id="mainImg" alt="No Image" />
+            <img src="~/images/no-image.jpg" class="main-image" id="mainImg" alt="No Image" />
         }
 
-        @* Thêm đoạn này *@
         @if (Model.CarImages != null && Model.CarImages.Count > 1)
         {
             <div class="thumbnail-list">
                 @foreach (var img in Model.CarImages)
                 {
-                    <img src="@Url.Content("~/images/cars/" + img.ImageUrl)"          class="thumb"  onclick="changeImage(this)"
+                    <img src="@Url.Content("~/images/cars/" + img.ImageUrl)" class="thumb" onclick="changeImage(this)"
                          alt="thumbnail" />
                 }
             </div>
@@ -37,6 +36,11 @@
 
     <div class="car-right">
         <h1>@Model.Name</h1>
+      <div class="car-video">
+    <video controls>
+        <source src="/Videos/@(Model.Slug).mp4" type="video/mp4">
+    </video>
+</div>
         <p>@Model.Description</p>
     </div>
 
@@ -61,7 +65,7 @@
                     @variant.Price.ToString("N0") VNĐ
                 </p>
 
-                <a asp-controller="Variant"         asp-action="Details"              asp-route-id="@variant.VariantId"   class="btn-detail">
+                <a asp-controller="Variant" asp-action="Details" asp-route-id="@variant.VariantId" class="btn-detail">
                     Xem chi tiết
                 </a>
             </div>
@@ -79,27 +83,41 @@
 </script>
 <hr class="my-5" />
 
-<h3>Xem Thêm Các Dòng Xe Khác </h3>
+<h3>Xem Thêm Các Dòng Xe Khác</h3>
 
 <div class="row">
-    @foreach (var item in ViewBag.RelatedCars as List<Car>)
-    {
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm">
+@foreach (var item in ViewBag.RelatedCars as List<Car>)
+{
+    var imageUrl = item.CarImages?.FirstOrDefault()?.ImageUrl;
 
-                <img src="@Url.Content("~/images/" + item.CarImages.First().ImageUrl)"     class="card-img-top"     alt="@item.Name"
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 shadow-sm">
+
+            @if (!string.IsNullOrEmpty(imageUrl))
+            {
+                <img src="@Url.Content("~/images/cars/" + imageUrl)"
+                     class="card-img-top"
+                     alt="@item.Name"
                      style="height:220px; object-fit:cover;" />
+            }
+            else
+            {
+                <img src="@Url.Content("~/images/no-image.png")"
+                     class="card-img-top"
+                     style="height:220px; object-fit:cover;" />
+            }
 
+            <div class="card-body">
+                <h6 class="card-title">@item.Name</h6>
 
-
-                <div class="card-body">
-                    <h6 class="card-title">@item.Name</h6>
-
-                    <a asp-action="Details" asp-route-slug="@item.Slug" class="btn btn-outline-danger btn-sm">
-                        Xem chi tiết
-                    </a>
-                </div>
-
+                <a asp-action="Details"
+                   asp-route-slug="@item.Slug"
+                   class="btn btn-outline-danger btn-sm">
+                    Xem chi tiết
+                </a>
             </div>
+
         </div>
-    }
+    </div>
+}
+</div>

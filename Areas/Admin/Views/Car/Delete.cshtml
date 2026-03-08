@@ -7,7 +7,7 @@
 
 <p>@Model.Name - @Model.Seats</p>
 
-<form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.Name" />
-    <button type="submit">Delete</button>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="CarId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
 </form>

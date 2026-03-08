@@ -1,0 +1,43 @@
+@model ToyotaWeb.Models.TestDrive
+
+@{
+    ViewData["Title"] = "Chi tiết đăng ký";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4> Thông tin khách hàng</h4>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
+
+                <dt class="col-sm-3">Điện thoại</dt>
+                <dd class="col-sm-9">@Model.Phone</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Mẫu xe</dt>
+                <dd class="col-sm-9">@Model.CarName</dd>
+
+                <dt class="col-sm-3">Ngày đăng ký</dt>
+                <dd class="col-sm-9">@Model.RegisterDate</dd>
+
+                <dt class="col-sm-3">Ghi chú</dt>
+                <dd class="col-sm-9">@Model.Note</dd>
+            </dl>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Quay lại
+            </a>
+
+        </div>
+    </div>
+
+</div>

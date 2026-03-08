@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ToyotaWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82b5d1d59971c02067ccf37909a112f177c079ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("ToyotaWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ToyotaWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

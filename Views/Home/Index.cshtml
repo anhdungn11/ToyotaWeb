@@ -9,6 +9,7 @@
 
 <!-- ===== BANNER ===== -->
 <section class="banner">
+    
     <img src="~/images/banner/trangchu.jpg" alt="Toyota Banner" class="banner-img" />
 </section>
 
@@ -55,44 +56,55 @@
 
     <div class="car-grid">
         @foreach (var car in Model)
-        {
-            var thumbnail = car.CarImages?
-                .FirstOrDefault()?.ImageUrl;
+{
+    var thumbnail = car.CarImages?
+        .FirstOrDefault()?.ImageUrl;
 
-           <div class="car-card">
-    <div class="car-image">
-        <img src="@(thumbnail != null 
-                    ? Url.Content("~/images/cars/" + thumbnail) 
-                    : Url.Content("~/images/no-image.jpg"))"
-             alt="@car.Name" />
-    </div>
-
-    <div class="car-info">
-        <h3>@car.Name</h3>
-
-        <div class="car-actions">
-            <a asp-controller="Car"
-               asp-action="Details"
-               asp-route-slug="@car.Slug"
-               class="btn-detail">
-                Xem chi tiết
-            </a>
-
-            <a asp-controller="Car"
-               asp-action="Estimate"
-               asp-route-id="@car.CarId"
-               class="btn-estimate">
-                Dự toán
-            </a>
-
-            <a asp-controller="Compare"
-               asp-action="Add"
-               asp-route-id="@car.CarId"
-               class="btn-compare">
-                So sánh
-            </a>
+    <div class="car-card">
+        <div class="car-image">
+            <img src="@(thumbnail != null 
+                        ? Url.Content("~/images/cars/" + thumbnail) 
+                        : Url.Content("~/images/no-image.jpg"))"
+                 alt="@car.Name" />
         </div>
+
+        <div class="car-info">
+            <h3>@car.Name</h3>
+
+            <div class="car-actions">
+
+                <a asp-controller="Car"
+                   asp-action="Details"
+                   asp-route-slug="@car.Slug"
+                   class="btn-detail">
+                    Xem chi tiết
+                </a>
+
+                <a asp-controller="Car"
+                   asp-action="Estimate"
+                   asp-route-id="@car.CarId"
+                   class="btn-estimate">
+                    Dự toán
+                </a>
+
+                <a asp-controller="Compare"
+                   asp-action="Add"
+                   asp-route-id="@car.CarId"
+                   class="btn-compare">
+                    So sánh
+                </a>
+
+                <!-- NÚT ĐĂNG KÝ LÁI THỬ -->
+                <a asp-controller="DangKyLaiThu"
+                   asp-action="Create"
+                   asp-route-dongXe="@car.Name"
+                   class="btn-testdrive">
+                     Đăng ký lái thử
+                </a>
+                
+
+            </div>
+        </div>
+        
     </div>
-</div>
-}
 }

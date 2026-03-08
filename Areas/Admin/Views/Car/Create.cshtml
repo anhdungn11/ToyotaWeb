@@ -3,18 +3,46 @@
 <h2>Create Car</h2>
 
 <form asp-action="Create" method="post">
-    <div>
-        <label>Name:</label>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div>
-        <label>Price:</label>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
         <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
-    <br />
+    <div class="mb-3">
+        <label asp-for="Category"></label>
+        <input asp-for="Category" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Origin"></label>
+        <input asp-for="Origin" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FuelType"></label>
+        <input asp-for="FuelType" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

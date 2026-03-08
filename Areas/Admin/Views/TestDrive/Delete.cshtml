@@ -1,0 +1,25 @@
+@model ToyotaWeb.Models.TestDrive
+
+<div class="container mt-5">
+    <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+            <h4>⚠ Xác nhận xoá</h4>
+        </div>
+
+        <div class="card-body">
+            <p>Bạn có chắc muốn xoá đăng ký của <b>@Model.FullName</b>?</p>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger">
+                     Xoá
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Huỷ
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

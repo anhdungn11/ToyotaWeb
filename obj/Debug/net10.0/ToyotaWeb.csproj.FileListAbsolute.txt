@@ -287,4 +287,11 @@ D:\ToyotaWeb\obj\Debug\net10.0\refint\ToyotaWeb.dll
 D:\ToyotaWeb\obj\Debug\net10.0\ToyotaWeb.pdb
 D:\ToyotaWeb\obj\Debug\net10.0\ToyotaWeb.genruntimeconfig.cache
 D:\ToyotaWeb\obj\Debug\net10.0\ref\ToyotaWeb.dll
-D:\ToyotaWeb\obj\Debug\net10.0\compressed\5i5j58cst0-{0}-o532hb3qvq-o532hb3qvq.gz
+D:\ToyotaWeb\obj\Debug\net10.0\compressed\ofoatmbilq-{0}-3606fbqogk-3606fbqogk.gz
+D:\ToyotaWeb\obj\Debug\net10.0\compressed\5i5j58cst0-{0}-v2prs6ahc5-v2prs6ahc5.gz
+D:\ToyotaWeb\bin\Debug\net10.0\publish\web.config
+D:\ToyotaWeb\bin\Debug\net10.0\publish\appsettings.Development.json
+D:\ToyotaWeb\bin\Debug\net10.0\publish\appsettings.json
+D:\ToyotaWeb\bin\Debug\net10.0\publish\ToyotaWeb.deps.json
+D:\ToyotaWeb\bin\Debug\net10.0\publish\ToyotaWeb.runtimeconfig.json
+D:\ToyotaWeb\bin\Debug\net10.0\publish\ToyotaWeb.staticwebassets.endpoints.json

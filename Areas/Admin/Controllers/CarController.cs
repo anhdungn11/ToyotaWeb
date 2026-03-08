@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ToyotaWeb.Data;
 using ToyotaWeb.Models;
-using System.Linq;
 
 namespace ToyotaWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]   // 👈 THÊM DÒNG NÀY
     public class CarController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,57 +15,97 @@ namespace ToyotaWeb.Areas.Admin.Controllers
             _context = context;
         }
 
+        // ======================
+        // INDEX
+        // ======================
         public IActionResult Index()
         {
             var cars = _context.Cars.ToList();
             return View(cars);
         }
 
+        // ======================
+        // CREATE - GET
+        // ======================
         public IActionResult Create()
         {
             return View();
         }
 
+        // ======================
+        // CREATE - POST
+        // ======================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Car car)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Cars.Add(car);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(car);
+            if (!ModelState.IsValid)
+                return View(car);
+
+            _context.Cars.Add(car);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit(int id)
+        // ======================
+        // EDIT - GET
+        // ======================
+        public IActionResult Edit(int? id)
         {
+            if (id == null) return NotFound();
+
             var car = _context.Cars.Find(id);
             if (car == null) return NotFound();
+
             return View(car);
         }
 
+        // ======================
+        // EDIT - POST
+        // ======================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Car car)
+        public IActionResult Edit(int id, Car car)
         {
-            if (ModelState.IsValid)
+            if (id != car.CarId)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(car);
+
+            try
             {
-                _context.Cars.Update(car);
+                _context.Update(car);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Cars.Any(e => e.CarId == id))
+                    return NotFound();
+                else
+                    throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int id)
+        // ======================
+        // DELETE - GET
+        // ======================
+        public IActionResult Delete(int? id)
         {
+            if (id == null) return NotFound();
+
             var car = _context.Cars.Find(id);
             if (car == null) return NotFound();
+
             return View(car);
         }
 
+        // ======================
+        // DELETE - POST
+        // ======================
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -78,6 +116,7 @@ namespace ToyotaWeb.Areas.Admin.Controllers
                 _context.Cars.Remove(car);
                 _context.SaveChanges();
             }
+
             return RedirectToAction(nameof(Index));
         }
     }

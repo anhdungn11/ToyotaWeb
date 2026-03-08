@@ -1,0 +1,29 @@
+
+@model List<ToyotaWeb.Models.Contact>
+@using ToyotaWeb.Models;
+<h2>Danh sách khách hàng tư vấn</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>SĐT</th>
+            <th>Xe quan tâm</th>
+            <th>Nội dung</th>
+            <th>Ngày gửi</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Phone</td>
+                <td>@item.CarName</td>
+                <td>@item.Message</td>
+                <td>@item.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

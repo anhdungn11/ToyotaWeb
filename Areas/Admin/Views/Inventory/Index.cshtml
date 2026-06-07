@@ -1,0 +1,147 @@
+@model List<ToyotaWeb.Models.Inventory>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-white mb-4">
+    🚗 INVENTORY MANAGEMENT
+</h1>
+
+<a href="/Admin/Inventory/Create" class="btn btn-success mb-4">
+
+    + Nhập xe
+
+</a>
+<form method="get" class="row mb-4">
+
+    <div class="col-md-4">
+
+        <input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control"
+               placeholder="Tìm tên xe hoặc VIN..." />
+
+    </div>
+
+    <div class="col-md-3">
+
+        <select name="status" class="form-select">
+
+            <option value="">-- Trạng thái --</option>
+
+            <option value="Còn hàng">Còn hàng</option>
+
+            <option value="Đã bán">Đã bán</option>
+
+            <option value="Đã cọc">Đã cọc</option>
+
+            <option value="Trưng bày">Trưng bày</option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button class="btn btn-primary w-100">
+            Tìm kiếm
+        </button>
+
+    </div>
+
+</form>
+
+<div class="table-responsive">
+
+    <table class="table table-dark table-hover">
+
+        <thead>
+
+            <tr>
+
+                <th>Xe</th>
+                <th>Màu</th>
+                <th>VIN</th>
+                <th>Tồn kho</th>
+                <th>Giá nhập</th>
+                <th>Giá bán</th>
+                <th>Chi nhánh</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.CarName</td>
+
+                    <td>@item.Color</td>
+
+                    <td>@item.VinNumber</td>
+
+                    <td>@item.Quantity</td>
+
+                    <td>@item.ImportPrice.ToString("N0") đ</td>
+
+                    <td>@item.SalePrice.ToString("N0") đ</td>
+
+                    <td>@item.Branch</td>
+
+                    <td>
+
+                        @if (item.Status == "Còn hàng")
+                        {
+                            <span class="badge bg-success">
+                                Còn hàng
+                            </span>
+                        }
+                        else if (item.Status == "Đã bán")
+                        {
+                            <span class="badge bg-danger">
+                                Đã bán
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">
+                                @item.Status
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        <a href="/Admin/Inventory/Edit/@item.Id" class="btn btn-sm btn-warning">
+
+                            Sửa
+
+                        </a>
+
+                        <form method="post" action="/Admin/Inventory/Delete/@item.Id" class="d-inline">
+
+                            <button type="submit" class="btn btn-sm btn-danger"
+
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa xe này?')">
+
+                                Xóa
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

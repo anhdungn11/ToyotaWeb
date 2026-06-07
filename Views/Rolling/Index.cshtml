@@ -1,0 +1,158 @@
+@model ToyotaWeb.Models.Car
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Giá lăn bánh";
+}
+
+<link rel="stylesheet" href="~/css/details.css" />
+
+<div class="container d-flex justify-content-center mt-5">
+
+    <div class="form-card" style="width:650px">
+
+        <h2 class="text-center mb-4">
+            💰 Tính giá lăn bánh - @Model.Name
+        </h2>
+
+        <!-- GIÁ XE -->
+        <div class="mt-3">
+            <label>Giá xe</label>
+            <input type="text"
+                   class="form-control"
+                   value="@Model.Price.ToString("N0", new CultureInfo("vi-VN"))"
+                   readonly />
+
+            <input type="hidden" id="price" value="@Model.Price" />
+        </div>
+
+        <!-- KHU VỰC -->
+        <div class="mt-3">
+            <label>Khu vực</label>
+            <select id="location" class="form-control">
+                <option value="0.1">TP.HCM (10%)</option>
+                <option value="0.12">Hà Nội (12%)</option>
+                <option value="0.1">Tỉnh khác</option>
+            </select>
+        </div>
+
+        <!-- ĐỨNG TÊN -->
+        <div class="mt-3">
+            <label>Đứng tên</label>
+            <select id="owner" class="form-control">
+                <option value="10000000">Cá nhân (10tr)</option>
+                <option value="20000000">Công ty (20tr)</option>
+            </select>
+        </div>
+
+        <!-- 🔥 PHỤ KIỆN THEO % -->
+        <div class="mt-3">
+            <label>🔥 Gói nâng cấp</label>
+
+            <div class="option-list mt-2">
+
+                <label><input type="checkbox" data-percent="0.03"> Body kit (~3%)</label><br>
+                <label><input type="checkbox" data-percent="0.025"> Mâm xe (~2.5%)</label><br>
+                <label><input type="checkbox" data-percent="0.015"> Vỏ xe (~1.5%)</label><br>
+                <label><input type="checkbox" data-percent="0.02"> Nội thất (~2%)</label><br>
+                <label><input type="checkbox" data-percent="0.01"> Phủ Ceramic (~1%)</label><br>
+                <label><input type="checkbox" data-percent="0.018"> Độ nội thất nâng cao (~1.8%)</label><br>
+
+            </div>
+        </div>
+
+        <!-- BUTTON -->
+        <div class="mt-4 text-center">
+            <button onclick="calculateRolling()" class="btn btn-dark me-2">
+                Tính giá
+            </button>
+
+            <button onclick="exportPDF()" class="btn btn-danger">
+                Xuất PDF
+            </button>
+        </div>
+
+        <!-- RESULT -->
+        <div id="result" class="mt-4"></div>
+
+    </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+
+function formatVND(n) {
+    return n.toLocaleString('vi-VN') + " đ";
+}
+
+function calculateRolling() {
+
+    let price = parseFloat(document.getElementById("price").value);
+    let tax = parseFloat(document.getElementById("location").value);
+    let plate = parseFloat(document.getElementById("owner").value);let options = document.querySelectorAll(".option-list input:checked");
+
+    let optionTotal = 0;
+    let optionHtml = "";
+
+    options.forEach(o => {
+
+        let percent = parseFloat(o.getAttribute("data-percent"));
+        let money = price * percent;
+
+        optionTotal += money;
+
+        optionHtml += "<li>"
+            + o.parentElement.innerText
+            + " → " + formatVND(money)
+            + "</li>";
+    });
+
+    let taxMoney = price * tax;
+
+    let total =
+        price +
+        taxMoney +
+        2000000 +     // đăng kiểm
+        1000000 +     // bảo trì đường bộ
+        plate +
+        optionTotal;
+
+    document.getElementById("result").innerHTML =
+        `
+        <div class="alert alert-light">
+
+            <h5>Chi tiết chi phí</h5>
+
+            <p>Giá xe: ${formatVND(price)}</p>
+            <p>Thuế trước bạ: ${formatVND(taxMoney)}</p>
+            <p>Biển số: ${formatVND(plate)}</p>
+            <p>Đăng kiểm: 2.000.000 đ</p>
+            <p>Bảo trì đường bộ: 1.000.000 đ</p>
+
+            <p><b>Phụ kiện:</b></p>
+            <ul>${optionHtml || "<li>Không chọn</li>"}</ul>
+
+            <hr/>
+
+            <h4 style="color:red">Tổng chi phí: ${formatVND(total)}</h4>
+
+        </div>
+        `;
+}
+
+function exportPDF() {
+
+    let element = document.getElementById("result");
+
+    if (!element.innerHTML.trim()) {
+        alert("Vui lòng tính giá trước!");
+        return;
+    }
+
+    html2pdf().from(element).save("gia-lan-banh.pdf");
+}
+
+</script>
+
+<!-- PDF LIB -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

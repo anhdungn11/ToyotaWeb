@@ -1,0 +1,125 @@
+@model ToyotaWeb.Models.Inventory
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-white mb-4">
+    ✏️ Chỉnh sửa Inventory
+</h1>
+
+<div class="form-box">
+
+    <form method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Tên xe
+                </label>
+
+                <input asp-for="CarName" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Màu
+                </label>
+
+                <input asp-for="Color" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    VIN
+                </label>
+
+                <input asp-for="VinNumber" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Số lượng
+                </label>
+
+                <input asp-for="Quantity" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Giá nhập
+                </label>
+
+                <input asp-for="ImportPrice" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Giá bán
+                </label>
+
+                <input asp-for="SalePrice" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Chi nhánh
+                </label>
+
+                <input asp-for="Branch" class="form-control" />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label class="text-white">
+                    Trạng thái
+                </label>
+
+                <select asp-for="Status" class="form-select">
+
+                    <option>Còn hàng</option>
+
+                    <option>Đã bán</option>
+
+                    <option>Đã cọc</option>
+
+                    <option>Trưng bày</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            Lưu thay đổi
+
+        </button>
+
+        <a href="/Admin/Inventory" class="btn btn-secondary">
+
+            Quay lại
+
+        </a>
+
+    </form>
+
+</div>

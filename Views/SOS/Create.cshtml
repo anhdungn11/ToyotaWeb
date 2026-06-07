@@ -1,0 +1,22 @@
+<form method="post" enctype="multipart/form-data">
+
+<input name="Name" placeholder="Tên" required />
+<input name="Phone" placeholder="SĐT" required />
+
+<textarea name="Description" placeholder="Tình trạng xe"></textarea>
+
+<input type="file" name="image" />
+
+<input type="hidden" name="Lat" id="lat">
+<input type="hidden" name="Lng" id="lng">
+
+<button type="submit">Gửi SOS</button>
+
+</form>
+
+<script>
+navigator.geolocation.getCurrentPosition(function(pos){
+    document.getElementById("lat").value = pos.coords.latitude;
+    document.getElementById("lng").value = pos.coords.longitude;
+});
+</script>

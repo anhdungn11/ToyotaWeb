@@ -1,0 +1,275 @@
+@model IEnumerable<ToyotaWeb.Models.EmployeeSalary>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-box {
+        padding: 40px;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-size: 42px;
+        font-weight: 800;
+    }
+
+    .btn-add {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        text-decoration: none;
+        padding: 14px 24px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .table-box {
+        background: #111827;
+        padding: 30px;
+        border-radius: 22px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+    }
+
+    .table thead {
+        background: #1e293b;
+    }
+
+    .table thead th {
+        border: none;
+        color: #cbd5e1;
+        padding: 18px;
+        text-align: left;
+    }
+
+    .table tbody td {
+        padding: 18px;
+        vertical-align: middle;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .money {
+        color: #22c55e;
+        font-weight: 700;
+    }
+
+    .paid {
+        background: #16a34a;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .unpaid {
+        background: #dc2626;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .btn-edit {
+        background: #f59e0b;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        margin-right: 6px;
+        display: inline-block;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        margin-right: 6px;
+        display: inline-block;
+    }
+
+    .btn-pay {
+        background: #22c55e;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        display: inline-block;
+    }
+</style>
+
+<div class="page-box">
+
+    <div class="top-bar">
+
+        <h1 class="page-title">
+            💰 QUẢN LÝ LƯƠNG NHÂN VIÊN
+        </h1>
+
+        <a href="/Accountant/Salary/Create" class="btn-add">
+
+            + Thêm bảng lương
+
+        </a>
+
+    </div>
+
+    <div class="table-box">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+<th>Nhân viên</th>
+
+<th>Lương cơ bản</th>
+
+<th>Bonus</th>
+
+                    <th>Hoa hồng</th>
+                    <th>Lương thực nhận</th>
+
+                    <th>Tháng</th>
+
+                    <th>Trạng thái</th>
+
+                    <th>Ngày trả</th>
+
+                    <th>Thao tác</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @item.EmployeeName
+                        </td>
+
+                        <td class="money">
+                            @item.BaseSalary.ToString("N0") đ
+                        </td>
+
+                        <td class="money">
+                            @item.Bonus.ToString("N0") đ
+                        </td>
+
+                        <td class="money">
+                            @item.Commission.ToString("N0") đ
+                        </td>
+
+                        <td class="money">
+                            @((item.NetSalary ?? 0).ToString("N0")) đ
+                        </td>
+
+                        <td>
+                            @item.Month/@item.Year
+                        </td>
+
+                        <td>
+
+                            @if (item.IsPaid)
+                            {
+                                <span class="paid">
+
+                                    Đã trả
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="unpaid">
+
+                                    Chưa trả
+
+                                </span>
+                            }
+
+                        </td>
+
+                        <td>
+
+                            @if (item.PaidDate != null)
+                            {
+                                @item.PaidDate?.ToString("dd/MM/yyyy")
+                            }
+                            else
+                            {
+                                <span style="color:#94a3b8;">
+                                    ---
+                                </span>
+                            }
+
+                        </td>
+
+                        <td>
+
+                            @if (!item.IsPaid)
+                            {
+                                <a href="/Accountant/Salary/Pay/@item.Id" class="btn-pay">
+
+                                    Thanh toán
+
+                                </a>
+                            }
+                            <a href="/Accountant/Salary/ExportPdf/@item.Id" class="btn-edit">
+
+                                    Xuất PDF
+
+                                </a>
+
+                            <a href="/Accountant/Salary/Edit/@item.Id" class="btn-edit">
+
+                                Sửa
+
+                            </a>
+
+                            <a href="/Accountant/Salary/Delete/@item.Id" class="btn-delete">
+
+                                Xóa
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

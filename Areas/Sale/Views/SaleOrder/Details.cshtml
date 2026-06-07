@@ -1,0 +1,380 @@
+@model ToyotaWeb.Models.SaleOrder
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Hợp đồng mua bán xe</title>
+
+    <style>
+
+        body {
+            font-family: "Times New Roman";
+            background: #d6d6d6;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: auto;
+            padding: 30mm 25mm;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 40%;
+            left: 10%;
+            font-size: 90px;
+            opacity: 0.05;
+            transform: rotate(-30deg);
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .title {
+            font-size: 28px;
+            margin-top: 25px;
+            margin-bottom: 35px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .section {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .article-title {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+
+        .signature {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .sign-name {
+            margin-top: 90px;
+            font-weight: bold;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 22px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        @@media print {
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .page {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <button class="print-btn" onclick="window.print()">
+        IN HỢP ĐỒNG
+    </button>
+
+    <div class="page">
+
+        <div class="watermark">
+            TOYOTA CRM
+        </div>
+
+        <div class="center bold">
+            CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+        </div>
+
+        <div class="center bold">
+            Độc lập - Tự do - Hạnh phúc
+        </div>
+
+        <div class="center">
+            -------------------------
+        </div>
+
+        <div class="center title">
+            HỢP ĐỒNG MUA BÁN XE Ô TÔ
+        </div>
+        <div class="section">
+
+            <b>Số hợp đồng:</b>
+            @(Model.ContractCode ?? "HD-2026-001")
+
+            <br />
+
+            Hôm nay, ngày
+            @DateTime.Now.Day tháng
+            @DateTime.Now.Month năm
+            @DateTime.Now.Year
+
+            tại showroom Toyota Bình Dương.
+
+        </div>
+
+        <div class="section">
+
+            <b>BÊN BÁN (BÊN A)</b>
+
+            <br />
+
+            Công ty:
+            TOYOTA BÌNH DƯƠNG
+
+            <br />
+
+            Địa chỉ:
+            Bình Dương, Việt Nam
+
+            <br />
+
+            Hotline:
+            0384 508 388
+
+            <br />
+
+            Mã số thuế:
+            3700XXXXXX
+
+        </div>
+
+        <div class="section">
+
+            <b>BÊN MUA (BÊN B)</b>
+
+            <br />
+
+            Họ tên:
+            @Model.CustomerName
+
+            <br />
+
+            Số điện thoại:
+            @(Model.CustomerPhone ?? "........................")
+
+            <br />
+
+            CCCD:
+            @(Model.CitizenId ?? "........................")
+
+            <br />
+
+            Địa chỉ:
+            @(Model.CustomerAddress ?? "........................")
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 1: THÔNG TIN XE
+        </div>
+
+        <div class="section">
+
+            Tên xe:
+            @Model.CarName
+
+            <br />
+
+            Phiên bản:
+            @(Model.CarVersion ?? "........................")
+
+            <br />
+
+            Màu xe:
+            @(Model.CarColor ?? "........................")
+
+            <br />
+
+            Số khung:
+            @(Model.ChassisNumber ?? "........................")
+
+            <br />
+
+            Số máy:
+            @(Model.EngineNumber ?? "........................")
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 2: GIÁ TRỊ HỢP ĐỒNG
+        </div>
+
+        <div class="section">
+
+            Tổng giá trị xe:
+
+            <b>
+                @Model.Price.ToString("N0") VNĐ
+            </b>
+
+            <br />
+
+            (Bằng chữ:
+            )
+
+            <br /><br />
+
+            Tiền cọc:
+
+            <b>
+                @(Model.Deposit?.ToString("N0") ?? "0") VNĐ
+            </b>
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 3: THANH TOÁN
+        </div>
+
+        <div class="section">
+
+            Phương thức thanh toán:
+            @(Model.PaymentMethod ?? "Chuyển khoản")
+
+            <br />
+
+            Số tiền còn lại sẽ được thanh toán trước khi bàn giao xe.
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 4: THỜI GIAN GIAO XE
+        </div>
+
+        <div class="section">
+
+            Ngày giao xe dự kiến:
+
+            @(Model.DeliveryDate?.ToString("dd/MM/yyyy")
+                ?? "........................")
+
+        </div>
+        <div class="article-title">
+            ĐIỀU 5: QUÀ TẶNG / KHUYẾN MÃI
+        </div>
+
+        <div class="section">
+
+            @(Model.Gift ??
+                "Dán phim cách nhiệt, camera hành trình, bảo hiểm thân vỏ.")
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 6: ĐIỀU KHOẢN PHẠT CỌC
+        </div>
+
+        <div class="section">
+
+            @(Model.PenaltyClause ??
+                "Nếu bên mua hủy hợp đồng sẽ mất tiền cọc. Nếu bên bán không giao xe đúng cam kết phải hoàn trả toàn bộ tiền cọc.")
+
+        </div>
+
+        <div class="article-title">
+            ĐIỀU 7: CAM KẾT
+        </div>
+
+        <div class="section">
+
+            Hai bên cam kết thực hiện đúng các điều khoản trong hợp đồng này.
+
+            <br />
+
+            Mọi tranh chấp phát sinh sẽ được giải quyết theo quy định pháp luật Việt Nam.
+
+        </div>
+
+        <div class="signature">
+
+            <div>
+
+                <b>BÊN BÁN</b>
+
+                <div class="sign-name">
+                    (Ký, ghi rõ họ tên)
+                </div>
+
+            </div>
+
+            <div>
+
+                <b>NHÂN VIÊN TƯ VẤN</b>
+
+                <div class="sign-name">
+
+                    @(Model.SaleSignature ?? "Toyota Sales")
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <b>BÊN MUA</b>
+
+                <div class="sign-name">
+                    @Model.CustomerName
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

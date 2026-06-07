@@ -8,13 +8,12 @@ namespace ToyotaWeb.Models
         [Key]
         public int ImageId { get; set; }
 
-        // Ảnh thuộc Variant
         public int? VariantId { get; set; }
 
         [ForeignKey("VariantId")]
         public CarVariant? CarVariant { get; set; }
 
-        // Ảnh thuộc Car (dùng cho Home)
+      
         public int? CarId { get; set; }
 
         [ForeignKey("CarId")]

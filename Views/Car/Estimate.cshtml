@@ -12,13 +12,12 @@
         <h3>@Model.Name</h3>
 
         <label>Giá xe:</label>
-        <!-- Hiển thị đẹp -->
+        
         <input type="text"
                id="priceDisplay"
                value="@Model.Price.ToString("N0", new CultureInfo("vi-VN"))"
                readonly />
 
-        <!-- Giá thật để JS tính toán -->
         <input type="hidden" id="price" value="@Model.Price" />
 
         <label>Trả trước (%):</label>

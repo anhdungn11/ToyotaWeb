@@ -1,0 +1,51 @@
+@model ToyotaWeb.Models.EmployeeSalary
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="form-box">
+
+    <h2>
+        ✏️ SỬA BẢNG LƯƠNG
+    </h2>
+
+    <form action="/Accountant/Salary/Edit" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <label>Nhân viên</label>
+
+        <input name="EmployeeName" value="@Model.EmployeeName" class="form-control" />
+
+        <label>Lương cơ bản</label>
+
+        <input name="BaseSalary" value="@Model.BaseSalary" type="number" class="form-control" />
+
+        <label>Bonus</label>
+
+        <input name="Bonus" value="@Model.Bonus" type="number" class="form-control" />
+
+        <label>Hoa hồng</label>
+
+        <input name="Commission" value="@Model.Commission" type="number" class="form-control" />
+
+        <label>Tháng</label>
+
+        <input name="Month" value="@Model.Month" type="number" class="form-control" />
+
+        <label>Năm</label>
+
+        <input name="Year" value="@Model.Year" type="number" class="form-control" />
+
+        <button type="submit" class="btn-save">
+
+            Cập nhật
+
+        </button>
+
+    </form>
+
+</div>

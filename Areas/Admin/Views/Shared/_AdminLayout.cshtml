@@ -1,55 +1,395 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <meta charset="utf-8" />
+
     <title>Admin Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/admin.css" />
-    <script src="~/js/site.js"></script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+
+        body {
+            background: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .admin-sidebar {
+
+            width: 290px;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #020617,
+                    #111827
+                );
+
+            padding: 28px 20px;
+
+            border-right: 1px solid #1e293b;
+
+            position: sticky;
+            top: 0;
+
+            overflow-y: auto;
+        }
+
+        .logo {
+
+            color: white;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            margin-bottom: 35px;
+        }
+
+        .menu-title {
+
+            margin-top: 28px;
+            margin-bottom: 14px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .admin-sidebar a {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #e2e8f0;
+
+            text-decoration: none;
+
+            padding: 14px 16px;
+
+            border-radius: 14px;
+
+            margin-bottom: 10px;
+
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+        .admin-sidebar a:hover {
+
+            background: #1e293b;
+
+            color: #38bdf8;
+
+            transform: translateX(5px);
+        }
+
+        .admin-sidebar a i {
+            width: 20px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .admin-header {
+
+            background:
+                rgba(15,23,42,0.95);
+
+            border-bottom: 1px solid #1e293b;
+
+            color: white;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 999;
+
+            backdrop-filter: blur(10px);
+        }
+
+        /* ================= CONTENT ================= */
+
+        .main-content {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #172554,
+                    #0f172a
+                );
+        }
+
+        hr {
+            border-color: #334155;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-    <div class="d-flex">
+<div class="d-flex">
 
-        <!-- Sidebar -->
-        <div class="bg-dark text-white p-3" style="width:250px; min-height:100vh;">
-            <h4>Admin</h4>
-            <hr />
+    <!-- ================= SIDEBAR ================= -->
 
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                        Dashboard
-                    </a>
-                </li>
+    <div class="admin-sidebar">
 
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="Admin" asp-controller="Car" asp-action="Index">
-                        Quản lý xe
-                    </a>
-                </li>
-                <a asp-area="Admin" asp-controller="Contacts" asp-action="Index">
-                    Quản lý tư vấn
-                </a>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/">
-                        Trang chủ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="Admin" asp-controller="TestDrive" asp-action="Index">
-                        Quản lý đăng ký lái thử
-                    </a>
-                </li>
-            </ul>
+        <div class="logo">
+             Admin Panel
         </div>
 
-        <!-- Content -->
-        <div class="flex-grow-1 p-4 bg-light">
-            @RenderBody()
-            @RenderSection("Scripts", required: false)
+            <!-- ================= SYSTEM OVERVIEW ================= -->
+            <div class="menu-title">
+                SYSTEM OVERVIEW
+            </div>
+
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Dashboard
+
+            </a>
+
+            <!-- ================= CAR MANAGEMENT ================= -->
+
+            <div class="menu-title">
+                CAR MANAGEMENT
+            </div>
+
+            <a asp-area="Admin" asp-controller="Car" asp-action="Index">
+
+                <i class="fa-solid fa-car"></i>
+
+                Showroom Xe
+
+            </a>
+
+            <!-- ================= INVENTORY ================= -->
+
+            <div class="menu-title">
+                INVENTORY
+            </div>
+
+            <a asp-area="Admin" asp-controller="Inventory" asp-action="Index">
+
+                <i class="fa-solid fa-warehouse"></i>
+
+                Quản lý xe
+
+            </a>
+
+            <!-- ================= HUMAN RESOURCE ================= -->
+
+            <div class="menu-title">
+                HUMAN RESOURCE
+            </div>
+
+            <a asp-area="Admin" asp-controller="Employee" asp-action="Index">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                Nhân sự
+
+            </a>
+
+            <!-- ================= CUSTOMER CRM ================= -->
+
+            <div class="menu-title">
+                CUSTOMER CRM
+            </div>
+
+            <a asp-area="Admin" asp-controller="Customer" asp-action="Index">
+
+                <i class="fa-solid fa-users"></i>
+
+                CRM khách hàng
+
+            </a>
+
+            <a asp-area="Admin" asp-controller="TestDrive" asp-action="Index">
+
+                <i class="fa-solid fa-road"></i>
+
+                Đăng ký lái thử
+
+            </a>
+
+            @* <a asp-area="Admin" asp-controller="Contacts" asp-action="Index">
+
+                <i class="fa-solid fa-headset"></i>
+
+                Khách tư vấn
+
+            </a> *@
+
+            <!-- ================= SALE CRM ================= -->
+
+            <div class="menu-title">
+                SALE CRM
+            </div>
+
+            <a href="/Sale">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Dashboard Sale
+
+            </a>
+
+            <a href="/Sale/Customer">
+
+                <i class="fa-solid fa-user-group"></i>
+
+                Khách hàng Sale
+
+            </a>
+
+            <a href="/Sale/SaleOrder">
+
+                <i class="fa-solid fa-file-invoice"></i>
+
+                Đơn hàng
+
+            </a>
+
+            <a href="/Sale/TestDrive">
+
+                <i class="fa-solid fa-road"></i>
+
+                Đăng ký lái thử Sale
+
+            </a>
+
+            <!-- ================= FINANCE ================= -->
+
+            <div class="menu-title">
+                FINANCE ACCOUNTANT
+            </div>
+
+            <a href="/Accountant/Dashboard">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                Finance Dashboard
+
+            </a>
+
+            <a href="/Accountant/Salary">
+
+                <i class="fa-solid fa-money-bill"></i>Quản lý lương
+
+            </a>
+
+            <a href="/Accountant/Expense">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                Quản lý chi phí
+
+            </a>
+
+            <a href="/Accountant/RevenueReport">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Báo cáo doanh thu
+
+            </a>
+
+            <!-- ================= SECURITY ================= -->
+
+            <div class="menu-title">
+                SECURITY
+            </div>
+
+            <a href="/Admin/SOS">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                SOS
+
+            </a>
+
+            <hr />
+
+            <!-- ================= QUICK ACCESS ================= -->
+
+            <div class="menu-title">
+                QUICK ACCESS
+            </div>
+
+            <a href="/">
+
+                <i class="fa-solid fa-house"></i>
+
+                Trang chủ
+
+            </a>
+
+        </div>
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="flex-grow-1 main-content">
+
+            <!-- ================= HEADER ================= -->
+
+            <div class="admin-header d-flex justify-content-between align-items-center px-4 py-3">
+
+                <h5 class="mb-0">
+                    🚀 Toyota Enterprise System
+                </h5>
+
+                <div>
+
+                    <span class="me-3">
+                        Xin chào Admin
+                    </span>
+
+                    <a href="/Account/Logout" class="btn btn-sm btn-danger">
+
+                        Đăng xuất
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- ================= BODY ================= -->
+
+            <div class="p-4">
+
+                @RenderBody()
+
+                @RenderSection("Scripts", required: false)
+
+            </div>
+
         </div>
 
     </div>

@@ -1,0 +1,276 @@
+@model ToyotaWeb.Models.Inventory
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+
+body{
+    background:#0f172a;
+}
+
+/* ===== TITLE ===== */
+
+.page-title{
+
+    color:white;
+
+    font-size:52px;
+
+    font-weight:900;
+
+    margin-bottom:35px;
+}
+
+/* ===== FORM BOX ===== */
+
+.form-box{
+
+    background:
+        linear-gradient(
+            145deg,
+            #111827,
+            #1e293b
+        );
+
+    border-radius:24px;
+
+    padding:40px;
+
+    border:1px solid #334155;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* ===== LABEL ===== */
+
+.form-label{
+
+    color:#cbd5e1;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+/* ===== INPUT ===== */
+
+.form-control,
+.form-select{
+
+    background:#0f172a !important;
+
+    border:1px solid #334155 !important;
+
+    color:white !important;
+
+    border-radius:14px !important;
+
+    padding:14px !important;
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#38bdf8 !important;
+
+    box-shadow:none !important;
+}
+
+/* ===== BUTTON ===== */
+
+.btn-save{
+
+    background:
+        linear-gradient(
+            145deg,
+            #22c55e,
+            #16a34a
+        );
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    color:white;
+
+    font-weight:800;
+
+    transition:0.25s;
+}
+
+.btn-save:hover{
+
+    transform:translateY(-3px);
+}
+
+.btn-back{
+
+    background:#334155;
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    color:white;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    margin-left:10px;
+}
+
+.btn-back:hover{
+
+    color:white;
+}
+
+</style>
+
+<h1 class="page-title">
+    🚗 NHẬP XE VÀO KHO
+</h1>
+
+<div class="form-box">
+
+<form method="post">
+
+<div class="row">
+
+    <!-- TÊN XE -->
+
+    <div class="col-md-6 mb-4">
+
+        <label class="form-label">
+            Tên xe
+        </label>
+
+        <input asp-for="CarName"
+               class="form-control"
+               placeholder="Ví dụ: Toyota Camry" />
+
+    </div>
+
+    <!-- MÀU -->
+
+    <div class="col-md-6 mb-4">
+
+        <label class="form-label">
+            Màu xe
+        </label>
+
+        <input asp-for="Color"
+               class="form-control"
+               placeholder="Trắng ngọc trai..." />
+
+    </div>
+
+    <!-- VIN -->
+
+    <div class="col-md-6 mb-4">
+
+        <label class="form-label">
+            VIN Number
+        </label>
+
+        <input asp-for="VinNumber"
+               class="form-control"
+               placeholder="Nhập mã VIN..." />
+
+    </div>
+
+    <!-- SỐ LƯỢNG -->
+
+    <div class="col-md-6 mb-4">
+
+        <label class="form-label">
+            Số lượng tồn
+        </label>
+
+        <input asp-for="Quantity"
+               class="form-control" />
+
+    </div>
+
+    <!-- GIÁ NHẬP -->
+
+    <div class="col-md-6 mb-4">
+
+        <label class="form-label">
+            Giá nhập
+        </label>
+
+        <input asp-for="ImportPrice"
+               class="form-control" />
+
+    </div>
+
+            <!-- GIÁ BÁN -->
+            <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+                    Giá bán
+                </label>
+
+                <input asp-for="SalePrice" class="form-control" />
+
+            </div>
+
+            <!-- CHI NHÁNH -->
+
+            <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+                    Chi nhánh
+                </label>
+
+                <input asp-for="Branch" class="form-control" placeholder="Toyota Bình Dương..." />
+
+            </div>
+
+            <!-- TRẠNG THÁI -->
+
+            <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+                    Trạng thái
+                </label>
+
+                <select asp-for="Status" class="form-select">
+
+                    <option>Còn hàng</option>
+
+                    <option>Đã cọc</option>
+
+                    <option>Đã bán</option>
+
+                    <option>Trưng bày</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn-save">
+
+            💾 Lưu kho
+
+        </button>
+
+        <a href="/Admin/Inventory" class="btn-back">
+
+            ← Quay lại
+
+        </a>
+
+    </form>
+
+</div>

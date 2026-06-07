@@ -1,0 +1,51 @@
+@model ToyotaWeb.Models.Customer
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+            <h3>CRM KHÁCH HÀNG</h3>
+        </div>
+
+        <div class="card-body">
+
+            <h4>Thông tin khách</h4>
+
+            <hr />
+
+            <p><b>Họ tên:</b> @Model.FullName</p>
+
+            <p><b>SĐT:</b> @Model.Phone</p>
+
+            <p><b>Email:</b> @Model.Email</p>
+
+            <p><b>Địa chỉ:</b> @Model.Address</p>
+
+            <p><b>Ngân sách:</b> @Model.Budget</p>
+
+            <p><b>Sale phụ trách:</b> @Model.Sale?.Name</p>
+
+            <p><b>Trạng thái:</b> @Model.Status</p>
+
+            <p><b>Ngày tạo:</b> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+
+            <hr />
+
+            <div class="alert alert-success">
+
+                Sale đang xử lý khách này trực tiếp trong CRM.
+
+            </div>
+
+            <a asp-action="Index" class="btn btn-secondary">
+
+                ← Quay lại
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

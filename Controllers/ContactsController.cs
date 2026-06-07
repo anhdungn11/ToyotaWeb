@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ToyotaWeb.Data;
 using ToyotaWeb.Models;
-using System;
 
 namespace ToyotaWeb.Controllers
 {
@@ -14,23 +13,38 @@ namespace ToyotaWeb.Controllers
             _context = context;
         }
 
-        // ===== FORM USER GỬI =====
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Contact model)
+        // =========================
+        // FORM TƯ VẤN
+        // =========================
+        public IActionResult Consult(string carName)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            ViewBag.CarName = carName;
+            return View();
+        }
 
-            model.CreatedAt = DateTime.Now;
-            model.IsCalled = false;
+        // =========================
+        // KHÁCH GỬI FORM
+        // =========================
+        [HttpPost]
+        public IActionResult Create(Customer customer)
+        {
+            customer.CreatedAt = DateTime.Now;
 
-            _context.Contacts.Add(model);
+            customer.Status = "Mới";
+
+            customer.Address ??= "";
+            customer.Email ??= "";
+            customer.Phone ??= "";
+            customer.FullName ??= "";
+
+            customer.InterestedCar ??= "";
+
+            _context.Customers.Add(customer);
+
             _context.SaveChanges();
 
-            TempData["success"] = "Gửi yêu cầu thành công!";
+            TempData["success"] =
+                "Cảm ơn bạn đã liên hệ, chúng tôi sẽ phản hồi sớm nhất.";
 
             return RedirectToAction("Index", "Home");
         }

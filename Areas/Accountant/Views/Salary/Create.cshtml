@@ -1,0 +1,611 @@
+@model ToyotaWeb.Models.EmployeeSalary
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-box {
+        max-width: 900px;
+        margin: 50px auto;
+        background: #111827;
+        padding: 45px;
+        border-radius: 28px;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
+    }
+
+    h2 {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 35px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #e2e8f0;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 58px;
+        border: 1px solid #334155;
+        border-radius: 16px;
+        background: #1e293b;
+        color: white;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #0f172a, #111827);
+        border: 1px solid #334155;
+        padding: 24px;
+        border-radius: 18px;
+        margin-bottom: 30px;
+    }
+
+    .info-box p {
+        margin-bottom: 14px;
+        color: #cbd5e1;
+        font-size: 15px;
+    }
+
+    .salary-box {
+        background: linear-gradient(135deg, #07111f, #0f172a);
+        border: 1px solid #334155;
+        padding: 28px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+    }
+
+    .salary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .salary-item:last-child {
+        border-bottom: none;
+    }
+
+    .salary-label {
+        font-size: 16px;
+        color: #e2e8f0;
+        font-weight: 700;
+    }
+
+    .money-red {
+        color: #ef4444;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .money-green {
+        color: #22c55e;
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .money-blue {
+        color: #38bdf8;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .btn-save {
+        width: 100%;
+        height: 60px;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        font-size: 17px;
+        font-weight: 800;
+        transition: 0.3s;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+    }
+</style>
+
+<div class="form-box">
+
+    <h2>
+        💰 THÊM BẢNG LƯƠNG
+    </h2>
+
+    <form action="/Accountant/Salary/Create" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <!-- ================= SALE ================= -->
+
+        <label>
+            Nhân viên Sale
+        </label><select name="SaleId" class="form-control" id="saleSelect">
+
+        <option value="">
+            -- Chọn nhân viên --
+        </option>
+
+        @foreach (var sale in ViewBag.Sales)
+        {
+            <option value="@sale.Id" data-email="@sale.Email" data-phone="@sale.Phone">
+
+                @sale.Name - @sale.Email
+
+            </option>
+        }
+
+    </select>
+
+    <!-- ================= INFO ================= -->
+
+    <div class="info-box">
+
+        <p>
+            📧 Email:
+            <span id="saleEmail">
+
+                Chưa chọn
+
+            </span>
+        </p>
+
+        <p>
+            📱 Phone:
+            <span id="salePhone">
+
+                Chưa chọn
+
+            </span>
+        </p>
+
+        <p>
+            🏢 Chi nhánh:
+            Toyota Bình Dương
+        </p>
+
+        <p>
+            💼 Chức vụ:
+            Nhân viên Sale
+        </p>
+
+    </div>
+
+    <!-- ================= REVENUE ================= -->
+
+    <div class="salary-box">
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                🚗 Số xe bán
+            </span>
+
+            <span class="money-blue" id="carsSoldText">
+
+                0 xe
+
+            </span>
+
+        </div>
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                💰 Doanh thu
+            </span>
+
+            <span class="money-green" id="revenueText">
+
+                0 đ
+
+            </span>
+
+        </div>
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                🪙 Hoa hồng
+            </span>
+
+            <span class="money-green" id="commissionText">
+
+                0 đ
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- ================= LƯƠNG ================= -->
+
+    <label>
+        Lương cơ bản
+    </label>
+
+    <input name="BaseSalary" type="number" value="0" class="form-control" id="baseSalary" />
+
+    <label>
+        Bonus KPI
+    </label>
+
+    <input name="Bonus" type="number" value="0" class="form-control" id="bonus" readonly />
+
+    <label>
+        Phụ cấp
+    </label>
+
+    <input name="Allowance" type="number" value="0" class="form-control" id="allowance" />
+
+    <!-- ================= HIDDEN ================= -->
+
+    <input type="hidden" name="Commission" id="commissionInput" value="0" />
+
+    <!-- ================= RESULT ================= -->
+
+    <div class="salary-box">
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                💰 Bảo hiểm
+            </span>
+
+            <span class="money-red" id="insuranceText">
+
+                0 đ
+
+            </span>
+
+        </div>
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                🧾 Thuế TNCN
+            </span>
+
+            <span class="money-red" id="taxText">
+
+                0 đ
+
+            </span>
+
+        </div>
+
+        <div class="salary-item">
+
+            <span class="salary-label">
+                💵 Lương thực nhận
+            </span>
+
+            <span class="money-green" id="netSalaryText">
+
+                0 đ
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- ================= TIME ================= -->
+
+    <label>
+        Tháng
+    </label>
+
+    <input name="Month" type="number" id="monthInput" value="@DateTime.Now.Month" class="form-control" />
+
+    <label>
+        Năm
+    </label>
+
+    <input name="Year" type="number" id="yearInput" value="@DateTime.Now.Year" class="form-control" />
+
+    <!-- ================= BUTTON ================= -->
+
+    <button type="submit" class="btn-save">
+
+        Tạo bảng lương
+
+    </button>
+
+</form>
+
+</div>
+
+<script>
+
+    // ================= ELEMENT =================
+
+    const saleSelect =
+    document.getElementById(
+    "saleSelect"
+    );
+
+    const baseSalary =
+    document.getElementById(
+    "baseSalary"
+    );
+
+    const bonus =
+    document.getElementById(
+    "bonus"
+    );
+
+    const allowance =
+    document.getElementById(
+    "allowance"
+    );
+
+    const monthInput =
+    document.getElementById(
+    "monthInput"
+    );
+
+    const yearInput =
+    document.getElementById(
+    "yearInput"
+    );
+
+    const commissionInput =
+    document.getElementById(
+    "commissionInput"
+    );
+
+    // ================= LOAD SALE =================
+
+    async function loadSaleSalary() {
+    const saleId =
+    saleSelect.value;
+
+    const month =
+    monthInput.value;
+
+    const year =
+    yearInput.value;
+
+    if (!saleId) {
+    return;
+    }
+
+    // ================= INFO =================
+
+    const option =
+    saleSelect.options[
+    saleSelect.selectedIndex
+    ]; document.getElementById(
+    "saleEmail"
+    ).innerText =
+    option.dataset.email || "";
+
+    document.getElementById(
+    "salePhone"
+    ).innerText =
+    option.dataset.phone || "";
+
+    // ================= API =================
+
+    const response =
+    await fetch(
+    `/Accountant/Salary/GetSalaryInfo?saleId=${saleId}&month=${month}&year=${year}`
+    );
+
+    const data =
+    await response.json();
+
+    // ================= RENDER =================
+
+    document.getElementById(
+    "carsSoldText"
+    ).innerText =
+    data.carsSold + " xe";
+
+    document.getElementById(
+    "revenueText"
+    ).innerText =
+    Number(data.revenue)
+    .toLocaleString()
+    + " đ";
+
+    document.getElementById(
+    "commissionText"
+    ).innerText =
+    Number(data.commission)
+    .toLocaleString()
+    + " đ";
+
+    // ================= AUTO BONUS =================
+
+    bonus.value =
+    data.bonus;
+
+        // ============// ================= SAVE COMMISSION =================
+
+        commissionInput.value =
+
+            data.commission;
+
+        // ================= RECALCULATE =================
+
+        calculateSalary();
+
+    }
+
+    // ================= CALCULATE =================
+
+    function calculateSalary() {
+
+        let base =
+
+            parseFloat(
+
+                baseSalary.value
+
+            ) || 0;
+
+        let bonusValue =
+
+            parseFloat(
+
+                bonus.value
+
+            ) || 0;
+
+        let allowanceValue =
+
+            parseFloat(
+
+                allowance.value
+
+            ) || 0;
+
+        let commissionValue =
+
+            parseFloat(
+
+                commissionInput.value
+
+            ) || 0;
+
+        // ================= INSURANCE =================
+
+        let insurance =
+
+            base * 0.105;
+
+        // ================= TOTAL =================
+
+        let totalIncome =
+
+            base
+
+            + bonusValue
+
+            + allowanceValue
+
+            + commissionValue;
+
+        // ================= TAX =================
+
+        let tax =
+
+            totalIncome * 0.1;
+
+        // ================= NET =================
+
+        let net =
+
+            totalIncome
+
+            - insurance
+
+            - tax;
+
+        // ================= RENDER =================
+
+        document.getElementById(
+
+            "insuranceText"
+
+        ).innerText =
+
+            insurance.toLocaleString()
+
+            + " đ";
+
+        document.getElementById(
+
+            "taxText"
+
+        ).innerText =
+
+            tax.toLocaleString()
+
+            + " đ";
+
+        document.getElementById(
+
+            "netSalaryText"
+
+        ).innerText =
+
+            net.toLocaleString()
+
+            + " đ";
+
+    }
+
+    // ================= EVENTS =================
+
+    saleSelect.addEventListener(
+
+        "change",
+
+        loadSaleSalary
+
+    );
+
+    monthInput.addEventListener(
+
+        "input",
+
+        loadSaleSalary
+
+    );
+
+    yearInput.addEventListener(
+
+        "input",
+
+        loadSaleSalary
+
+    );
+
+    baseSalary.addEventListener(
+
+        "input",
+
+        calculateSalary
+
+    );
+
+    allowance.addEventListener(
+
+        "input",
+
+        calculateSalary
+
+    );
+
+    // ================= INIT =================
+
+    calculateSalary();
+
+</script>

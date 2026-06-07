@@ -1,0 +1,60 @@
+@model ToyotaWeb.Models.EmployeeSalary
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .delete-box {
+        max-width: 600px;
+        margin: 100px auto;
+        background: #111827;
+        padding: 40px;
+        border-radius: 24px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 38px;
+        margin-bottom: 30px;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        border: none;
+        color: white;
+        padding: 14px 28px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="delete-box">
+
+    <h2>
+        ⚠ XÓA BẢNG LƯƠNG
+    </h2>
+
+    <h4 class="mb-4">
+        @Model.EmployeeName
+    </h4>
+
+    <form action="/Accountant/Salary/Delete/@Model.Id" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn-delete">
+
+            Xác nhận xóa
+
+        </button>
+
+    </form>
+
+</div>

@@ -1,0 +1,79 @@
+body{
+    background:#0f172a;
+    color:white;
+    font-family:'Segoe UI';
+}
+
+.consult-container{
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px;
+}
+
+.consult-box{
+    width:700px;
+
+    background:#111827;
+
+    border-radius:25px;
+
+    padding:45px;
+
+    border:1px solid #334155;
+}
+
+.consult-box h1{
+    font-size:42px;
+    font-weight:900;
+
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+}
+
+.form-control{
+    width:100%;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    border:1px solid #334155;
+
+    background:#020617;
+
+    color:white;
+}
+
+.btn-submit{
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#22c55e;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:800;
+}

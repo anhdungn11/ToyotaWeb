@@ -4,12 +4,11 @@ namespace ToyotaWeb.Models
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Nhập email")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Nhập mật khẩu")]
         public string Password { get; set; }
     }
 }

@@ -1,0 +1,128 @@
+@model List<ToyotaWeb.Models.SaleOrder>
+
+@{
+    Layout = "~/Areas/Sale/Views/Shared/_SaleLayout.cshtml";
+}
+
+<style>
+    .page-title {
+        color: white;
+        font-size: 48px;
+        font-weight: 800;
+        margin-bottom: 35px;
+    }
+
+    .table-box {
+        background:
+            linear-gradient(135deg,
+                #111827,
+                #1e293b);
+
+        border-radius: 24px;
+
+        padding: 25px;
+
+        border: 1px solid #334155;
+    }
+
+    table {
+        width: 100%;
+        color: white;
+    }
+
+    th {
+        color: #94a3b8;
+        padding: 16px;
+    }
+
+    td {
+        padding: 18px 16px;
+        border-top: 1px solid #334155;
+    }
+
+    .price {
+        color: #22c55e;
+        font-weight: 800;
+    }
+
+    .status {
+        background: #052e16;
+        color: #22c55e;
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-weight: 700;
+    }
+</style>
+
+<h1 class="page-title">
+    📄 SALE ORDER CRM
+</h1>
+
+<div class="table-box">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Khách hàng</th>
+
+                <th>Xe</th>
+
+                <th>Giá xe</th>
+
+                <th>Trạng thái</th>
+
+                <th>Ngày tạo</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+
+                        <a href="/Sale/SaleOrder/Details/@item.Id" style="
+                            color:white;
+                            text-decoration:none;
+                            font-weight:700;
+                            ">
+
+                            @item.CustomerName
+
+                        </a>
+
+                    </td>
+
+                    <td>
+                        @item.CarName
+                    </td>
+
+                    <td class="price">
+                        @item.Price.ToString("N0") đ
+                    </td>
+
+                    <td>
+                        <span class="status">
+                            @item.Status
+                        </span>
+                    </td>
+
+                    <td>
+                        @item.CreatedDate.ToString("dd/MM/yyyy")
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

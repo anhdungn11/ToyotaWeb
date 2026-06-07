@@ -3,16 +3,38 @@
 @{
     ViewData["Title"] = "Trang chủ";
 }
-<a asp-action="Index" asp-route-sortOrder="price_asc">
-    @* Giá từ thấp đến cao *@
-</a>
 
+<link rel="stylesheet" href="~/css/home.css" />
+@if (TempData["success"] != null)
+{
+    <div class="alert success-alert">
+        @TempData["success"]
+    </div>
+}
 <!-- ===== BANNER ===== -->
 <section class="banner">
-    
-    <img src="~/images/banner/trangchu.jpg" alt="Toyota Banner" class="banner-img" />
+    <div class="slider">
+
+        <div class="slide active">
+            <img src="~/images/banner/trangchu.jpg" />
+            <div class="banner-content">
+                <h1>VẬN ĐỘNG BỨT PHÁ</h1>
+                <p>Khám phá dòng xe Toyota mới nhất</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="~/images/banner/trangchu2.png" />
+            <div class="banner-content">
+                <h1>ƯU ĐÃI ĐẦU NĂM</h1>
+                <p>Trả trước 0đ - Lãi suất hấp dẫn</p>
+            </div>
+        </div>
+
+    </div>
 </section>
 
+<!-- ===== SEARCH ===== -->
 <section class="filter-box">
     <form method="get" asp-controller="Car" asp-action="Index">
 
@@ -26,8 +48,8 @@
 
         <select name="seats">
             <option value="">Số chỗ</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
+            <option value="5">5 chỗ</option>
+            <option value="7">7 chỗ</option>
         </select>
 
         <select name="fuelType">
@@ -46,65 +68,77 @@
         </select>
 
         <button type="submit">Tìm xe</button>
-
     </form>
 </section>
 
-<!-- ===== DANH SÁCH XE ===== -->
-<section class="car-list">
-    <h2 class="section-title">Các dòng xe nổi bật</h2>
+<!-- ===== SHOWROOM ===== -->
+<section class="car-showroom">
 
-    <div class="car-grid">
+    <h2 class="title">KHÁM PHÁ CÁC DÒNG XE TOYOTA</h2>
+
+    <div class="car-tabs">
+        <span class="active" data-type="">Tất cả</span>
+        <span data-type="SUV">SUV</span>
+        <span data-type="Sedan">Sedan</span>
+        <span data-type="MPV">Đa dụng</span>
+        <span data-type="Pickup">Bán tải</span>
+    </div>
+
+    <div class="car-list-new">
         @foreach (var car in Model)
-{
-    var thumbnail = car.CarImages?
-        .FirstOrDefault()?.ImageUrl;
+        {
+            var thumbnail = car.CarImages?.FirstOrDefault()?.ImageUrl;
 
-    <div class="car-card">
-        <div class="car-image">
-            <img src="@(thumbnail != null 
-                        ? Url.Content("~/images/cars/" + thumbnail) 
-                        : Url.Content("~/images/no-image.jpg"))"
-                 alt="@car.Name" />
-        </div>
-
-        <div class="car-info">
-            <h3>@car.Name</h3>
-
-            <div class="car-actions">
-
+            <div class="car-item" data-type="@car.BodyType">
                 <a asp-controller="Car"
                    asp-action="Details"
-                   asp-route-slug="@car.Slug"
-                   class="btn-detail">
-                    Xem chi tiết
-                </a>
+                   asp-route-slug="@car.Slug">
 
-                <a asp-controller="Car"
-                   asp-action="Estimate"
-                   asp-route-id="@car.CarId"
-                   class="btn-estimate">
-                    Dự toán
+                    <img src="@(thumbnail != null 
+                                ? Url.Content("~/images/cars/" + thumbnail) 
+                                : Url.Content("~/images/no-image.jpg"))" /><h3>@car.Name</h3>
+                    <p>Chỉ từ @car.Price.ToString("N0") VND</p>
                 </a>
-
-                <a asp-controller="Compare"
-                   asp-action="Add"
-                   asp-route-id="@car.CarId"
-                   class="btn-compare">
-                    So sánh
-                </a>
-
-                <!-- NÚT ĐĂNG KÝ LÁI THỬ -->
-                <a asp-controller="DangKyLaiThu"
-                   asp-action="Create"
-                   asp-route-dongXe="@car.Name"
-                   class="btn-testdrive">
-                     Đăng ký lái thử
-                </a>
-                
-
             </div>
-        </div>
-        
+        }
     </div>
-}
+
+</section>
+
+<!-- ===== JS ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // slider
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
+
+    setInterval(() => {
+        slides[index].classList.remove("active");
+        index = (index + 1) % slides.length;
+        slides[index].classList.add("active");
+    }, 3000);
+
+    // filter tab
+    document.querySelectorAll(".car-tabs span").forEach(tab => {
+        tab.onclick = () => {
+
+            document.querySelectorAll(".car-tabs span")
+                .forEach(t => t.classList.remove("active"));
+
+            tab.classList.add("active");
+
+            let type = tab.dataset.type;
+
+            document.querySelectorAll(".car-item").forEach(item => {
+                if (!type || item.dataset.type === type) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    });
+
+});
+</script>

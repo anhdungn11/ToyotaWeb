@@ -1,0 +1,53 @@
+@model ToyotaWeb.Models.EmployeeProfile
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <div class="card bg-dark text-white p-5 rounded-4">
+
+        <h1 class="mb-4 text-danger">
+            ⚠️ Xóa nhân viên
+        </h1>
+
+        <h4>
+            Bạn có chắc muốn xóa nhân viên này không?
+        </h4>
+
+        <hr />
+
+        <p>
+            <b>Họ tên:</b> @Model.FullName
+        </p>
+
+        <p>
+            <b>Chức vụ:</b> @Model.Position
+        </p>
+
+        <p>
+            <b>Phòng ban:</b> @Model.Department
+        </p>
+
+        <form asp-action="DeleteConfirmed">
+
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger">
+
+                🗑️ Xác nhận xóa
+
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+
+                Quay lại
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,195 @@
+@{
+    Layout = "~/Areas/Sale/Views/Shared/_SaleLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+    }
+
+    .dashboard-title {
+
+        color: white;
+
+        font-size: 55px;
+
+        font-weight: 900;
+
+        margin-bottom: 35px;
+    }
+
+    .stats-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 25px;
+    }
+
+    .stat-card {
+
+        background:
+            linear-gradient(145deg,
+                #111827,
+                #1e293b);
+
+        border-radius: 24px;
+
+        padding: 30px;
+
+        color: white;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.3);
+
+        transition: 0.25s;
+    }
+
+    .stat-card:hover {
+
+        transform: translateY(-5px);
+    }
+
+    .stat-title {
+
+        color: #94a3b8;
+
+        font-size: 15px;
+
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+
+        font-size: 45px;
+
+        font-weight: 900;
+    }
+
+    .activity-box {
+
+        margin-top: 40px;
+
+        background: #111827;
+
+        border-radius: 24px;
+
+        padding: 30px;
+
+        color: white;
+    }
+
+    .activity-item {
+
+        padding: 16px 0;
+
+        border-bottom:
+            1px solid #1e293b;
+    }
+
+    .activity-item:last-child {
+        border: none;
+    }
+</style>
+
+<h1 class="dashboard-title">
+    🚗 SALE DASHBOARD
+</h1>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Tổng khách hàng
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.TotalCustomers
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Khách tư vấn
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.TotalContacts
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Đã gọi
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.CalledContacts
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Chưa gọi
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.PendingContacts
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Đơn hàng
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.TotalOrders
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            Đăng ký lái thử
+        </div>
+
+        <div class="stat-number">
+            @ViewBag.TotalTestDrives
+        </div>
+
+    </div>
+
+</div>
+
+<div class="activity-box">
+
+    <h3>
+        📌 Hoạt động gần đây
+    </h3>
+
+    <div class="activity-item">
+        🚗 Có khách mới đăng ký lái thử
+    </div>
+
+    <div class="activity-item">
+        📞 Có khách cần tư vấn
+    </div>
+
+    <div class="activity-item">
+        💰 Có đơn hàng mới được tạo
+    </div>
+
+</div>

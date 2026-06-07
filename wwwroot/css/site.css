@@ -322,7 +322,7 @@ footer{
 }
 
 .car-card a:hover {
-    color: #d71920; /* đỏ Toyota */
+    color: #d71920; 
 }
 .car-actions {
     margin-top: 12px;
@@ -341,7 +341,6 @@ footer{
     transition: 0.3s;
 }
 
-/* Xem chi tiết */
 .btn-detail {
     background: #be1f1f;
     color: #fff;
@@ -351,7 +350,6 @@ footer{
     background: #c2b3b4;
 }
 
-/* Dự toán */
 .btn-estimate {
     border: 1px solid #d71920;
     color: #d71920;
@@ -362,7 +360,6 @@ footer{
     color: #fff;
 }
 
-/* So sánh */
 .btn-compare {
     background: #f2f2f2;
     color: #333;
@@ -407,9 +404,8 @@ footer{
 .btn-testdrive:hover {
     background-color: #e6b800;
 }
-/* ================= FLOATING ICONS ================= */
 
-/* CHAT ICON */
+
 .chat-toggle {
     position: fixed;
     bottom: 20px;
@@ -428,10 +424,9 @@ footer{
     z-index: 999;
 }
 
-/* PHONE ICON */
 .contact-toggle {
     position: fixed;
-    bottom: 95px; /* nằm trên chat */
+    bottom: 95px; 
     right: 20px;
     width: 60px;
     height: 60px;
@@ -447,7 +442,6 @@ footer{
     z-index: 999;
 }
 
-/* CHAT BOX */
 .chat-container {
     position: fixed;
     bottom: 90px;
@@ -588,8 +582,6 @@ footer{
     color:white;
 }
 
-/* HERO */
-
 .sale-hero{
     background:url('/images/banner/pro.jfif');
     background-size:cover;
@@ -606,11 +598,9 @@ footer{
 
 .sale-hero h1{
     font-size:42px;
-    font-weight:bold;
+    font-weight:bold;;.
 }
 
-
-/* ABOUT */
 
 .sale-about{
     padding:70px 0;
@@ -620,9 +610,6 @@ footer{
     border-radius:10px;
 }
 
-
-/* FEATURES */
-
 .sale-features{
     background:#f5f5f5;
     padding:70px 0;
@@ -630,4 +617,80 @@ footer{
 
 .sale-features h2{
     font-weight:bold;
+}
+
+.chat-box{
+display:none;
+position:fixed;
+right:20px;
+bottom:90px;
+width:300px;
+background:white;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+z-index:9999;
+}
+
+.chat-header{
+background:#e53935;
+color:white;
+padding:10px;
+font-weight:bold;
+display:flex;
+justify-content:space-between;
+}
+
+.chat-body{
+padding:10px;
+}
+
+.chat-body input,
+.chat-body textarea{
+width:100%;
+margin-bottom:8px;
+padding:6px;
+}
+
+.chat-body button{
+width:100%;
+background:#e53935;
+color:white;
+border:none;
+padding:8px;
+cursor:pointer;
+}
+
+.toyota-footer a {
+    text-decoration: none;   /* bỏ gạch chân */
+    color: #333;             /* màu xám đậm */
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.toyota-footer a:hover {
+    color: #d71920;          /* đỏ Toyota */
+}
+.toyota-footer h4 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.toyota-footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.toyota-footer li {
+    margin-bottom: 8px;
+}
+
+.toyota-footer {
+    background: #fff;
+    padding: 40px 80px;
+}
+
+.footer-menu {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
 }

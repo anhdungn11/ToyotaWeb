@@ -8,7 +8,6 @@ namespace ToyotaWeb.Models
         [Key]
         public int CarId { get; set; }
 
-        // ===== BẮT BUỘC =====
         [Required(ErrorMessage = "Tên xe là bắt buộc")]
         [StringLength(300)]
         public string Name { get; set; } = string.Empty;
@@ -17,7 +16,7 @@ namespace ToyotaWeb.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        // ===== KHÔNG BẮT BUỘC =====
+
         [StringLength(100)]
         public string? Slug { get; set; }
 
@@ -38,16 +37,15 @@ namespace ToyotaWeb.Models
         public string? Description { get; set; }
 
         public string? ImageUrl { get; set; }
-        public string? VideoUrl {get;set;}
+        public string? VideoUrl { get; set; }
 
         public bool IsActive { get; set; } = true;
 
-        // ===== NAVIGATION =====
         public ICollection<CarImage> CarImages { get; set; } = new List<CarImage>();
 
         public ICollection<CarVariant> CarVariants { get; set; } = new List<CarVariant>();
-
-        // ===== Thumbnail tự động =====
+         [NotMapped]
+    public IFormFile? ImageFile{get;set;}
         [NotMapped]
         public string? Thumbnail
         {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToyotaWeb.Data;
+using ToyotaWeb.Models;
 
 namespace ToyotaWeb.Controllers
 {
@@ -14,63 +15,80 @@ namespace ToyotaWeb.Controllers
         }
 
         // ================= DANH SÁCH XE =================
-        public IActionResult Index(string bodyType, int? seats, string fuelType, string origin)
+
+        public IActionResult Index(
+            string bodyType,
+            int? seats,
+            string fuelType,
+            string origin)
         {
-            var cars = _context.Cars
-                .Include(c => c.CarImages)
-                .AsQueryable();
+            var cars = _context.Cars.AsQueryable();
+
+            // FILTER
 
             if (!string.IsNullOrEmpty(bodyType))
-                cars = cars.Where(c => c.BodyType == bodyType);
+            {
+                cars = cars.Where(x => x.BodyType == bodyType);
+            }
 
             if (seats.HasValue)
-                cars = cars.Where(c => c.Seats == seats.Value);
+            {
+                cars = cars.Where(x => x.Seats == seats);
+            }
 
             if (!string.IsNullOrEmpty(fuelType))
-                cars = cars.Where(c => c.FuelType == fuelType);
+            {
+                cars = cars.Where(x => x.FuelType == fuelType);
+            }
 
             if (!string.IsNullOrEmpty(origin))
-                cars = cars.Where(c => c.Origin == origin);
+            {
+                cars = cars.Where(x => x.Origin == origin);
+            }
+
+            // CHỈ XE ĐANG KINH DOANH
+
+            cars = cars.Where(x => x.IsActive == true);
 
             return View(cars.ToList());
         }
 
         // ================= CHI TIẾT XE =================
+
         public IActionResult Details(string slug)
         {
             if (string.IsNullOrEmpty(slug))
+            {
                 return NotFound();
+            }
 
             var car = _context.Cars
-                .Include(c => c.CarImages)
-                .Include(c => c.CarVariants)
-                .FirstOrDefault(c => c.Slug == slug);
+                .FirstOrDefault(x => x.Slug == slug);
 
             if (car == null)
+            {
                 return NotFound();
-
-            // 🔥 LẤY XE LIÊN QUAN (CÙNG BODYTYPE)
-            var relatedCars = _context.Cars
-                .Include(c => c.CarImages)
-                .Where(c => c.CarId != car.CarId &&
-                            c.BodyType == car.BodyType)
-                .Take(4)
-                .ToList();
-
-            ViewBag.RelatedCars = relatedCars;
+            }
 
             return View(car);
         }
 
-        // ================= TÍNH GIÁ =================
-        public IActionResult Estimate(int id)
+        // ================= DỰ TOÁN =================
+
+        public IActionResult Estimate(string slug)
         {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound();
+            }
+
             var car = _context.Cars
-                .Include(c => c.CarVariants)
-                .FirstOrDefault(c => c.CarId == id);
+                .FirstOrDefault(x => x.Slug == slug);
 
             if (car == null)
+            {
                 return NotFound();
+            }
 
             return View(car);
         }

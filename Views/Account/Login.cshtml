@@ -1,33 +1,28 @@
 @model ToyotaWeb.Models.LoginViewModel
+<link rel="stylesheet" href="/css/auth.css?v=999" />
 
-<h2>Đăng nhập</h2>
+<div class="auth-container">
+    <h2>Đăng nhập</h2>
 
-<div class="row mt-4">
-    <div class="col-md-4">
+    <form asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
 
-        <form asp-action="Login" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-            <div class="mb-3">
-                <label>Email</label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+        <input asp-for="Email" placeholder="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
 
-            <div class="mb-3">
-                <label>Mật khẩu</label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+        <input asp-for="Password" type="password" placeholder="Mật khẩu" />
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-            <button type="submit" class="btn btn-primary w-100">
-                Đăng nhập
-            </button>
+        <button type="submit">Đăng nhập</button>
+    </form>
 
-        </form>
+    <p class="switch">
+        <a href="/Account/ForgotPassword">Quên mật khẩu?</a>
+    </p>
 
-    </div>
+    <p class="switch">
+        Chưa có tài khoản? <a href="/Account/Register">Đăng ký</a>
+    </p>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

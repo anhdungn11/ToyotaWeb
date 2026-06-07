@@ -1,0 +1,269 @@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI';
+    }
+
+    .report-box {
+        padding: 40px;
+    }
+
+    .report-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 30px;
+    }
+
+    .filter-box {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        background: #111827;
+        border: 1px solid #334155;
+        color: white;
+        height: 50px;
+        border-radius: 14px;
+        padding: 10px 15px;
+    }
+
+    .btn-filter {
+        background: #22c55e;
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .report-card {
+        background: linear-gradient(135deg, #111827, #1e293b);
+        border: 1px solid #334155;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-label {
+        color: #94a3b8;
+        margin-bottom: 15px;
+        font-size: 15px;
+    }
+
+    .card-value {
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .green {
+        color: #22c55e;
+    }
+
+    .red {
+        color: #ef4444;
+    }
+
+    .blue {
+        color: #38bdf8;
+    }
+
+    .yellow {
+        color: #f59e0b;
+    }
+
+    .table-box {
+        background: #111827;
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid #334155;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 18px;
+        color: #94a3b8;
+        border-bottom: 1px solid #334155;
+    }
+
+    td {
+        padding: 18px;
+        border-bottom: 1px solid #1e293b;
+    }
+</style>
+
+<div class="report-box">
+
+    <h1 class="report-title">
+        📊 BÁO CÁO DOANH THU
+    </h1>
+
+    <!-- ================= FILTER ================= -->
+
+    <form method="get" class="filter-box">
+
+        <input type="number" name="month" value="@ViewBag.Month" class="form-control" placeholder="Tháng" />
+
+        <input type="number" name="year" value="@ViewBag.Year" class="form-control" placeholder="Năm" />
+
+        <button class="btn-filter">
+            Lọc báo cáo
+        </button>
+
+    </form>
+
+    <!-- ================= CARDS ================= -->
+
+    <div class="card-grid">
+
+        <div class="report-card">
+
+            <div class="card-label">
+                💰 Tổng doanh thu
+            </div>
+
+            <div class="card-value green">
+                @ViewBag.Revenue.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="card-label">💸 Hoa hồng sale
+            </div>
+
+            <div class="card-value blue">
+                @ViewBag.Commission.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="card-label">
+                📉 Chi phí công ty
+            </div>
+
+            <div class="card-value red">
+                @ViewBag.Expenses.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="card-label">
+                👨‍💼 Tổng lương
+            </div>
+
+            <div class="card-value blue">
+                @ViewBag.Salaries.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="card-label">
+                🚗 Xe đã bán
+            </div>
+
+            <div class="card-value yellow">
+                @ViewBag.TotalCars
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="card-label">
+                💵 Lợi nhuận thực
+            </div>
+
+            <div class="card-value green">
+                @ViewBag.Profit.ToString("N0") đ
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= TABLE ================= -->
+
+    <div class="table-box">
+
+        <h2 style="margin-bottom:25px">
+            📋 DANH SÁCH ĐƠN HÀNG
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Khách hàng</th>
+                    <th>Xe</th>
+                    <th>Sale</th>
+                    <th>Giá</th>
+                    <th>Ngày</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in ViewBag.Orders)
+                {
+                    <tr>
+
+                        <td>
+                            @item.CustomerName
+                        </td>
+
+                        <td>
+                            @item.CarName
+                        </td>
+
+                        <td>
+                            @item.Sale?.Name
+                        </td>
+
+                        <td class="green">
+                            @item.Price.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @item.CreatedDate.ToString("dd/MM/yyyy")
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

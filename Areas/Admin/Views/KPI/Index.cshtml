@@ -1,0 +1,259 @@
+margin-top: 22px;
+
+        display: inline-block;
+
+        padding: 10px 18px;
+
+        border-radius: 999px;
+
+        font-weight: 800;
+
+        background: rgba(34,197,94,0.15);
+
+        color: #4ade80;
+    }
+
+    .bonus-box {
+
+        margin-top: 22px;
+
+        background: rgba(56,189,248,0.12);
+
+        border: 1px solid rgba(56,189,248,0.25);
+
+        border-radius: 18px;
+
+        padding: 18px;
+    }
+
+    .bonus-title {
+
+        color: #94a3b8;
+
+        margin-bottom: 10px;
+    }
+
+    .bonus-value {
+
+        font-size: 28px;
+        font-weight: 900;
+
+        color: #38bdf8;
+    }
+
+    .warning {
+
+        margin-top: 22px;
+
+        background: rgba(239,68,68,0.12);
+
+        border: 1px solid rgba(239,68,68,0.25);
+
+        color: #f87171;
+
+        border-radius: 16px;
+
+        padding: 15px;
+
+        font-weight: 700;
+    }
+
+</style>
+
+<div class="dashboard-container">
+
+    <div class="top-bar">
+
+        <h1 class="page-title">
+            📈 KPI SALES MANAGEMENT
+        </h1>
+
+        <a href="/Admin/KPI/Create"
+           class="btn-create">
+
+            + Tạo KPI
+
+        </a>
+
+    </div>
+
+    <!-- SUMMARY -->
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Tổng KPI
+            </div>
+
+            <div class="summary-value">
+                @Model.Count()
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Tổng doanh thu hiện tại
+            </div>
+
+            <div class="summary-value">
+
+                @((IEnumerable<dynamic>)Model).Sum(x => x.CurrentRevenue).ToString("N0") đ
+
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Tổng thưởng KPI
+            </div>
+
+            <div class="summary-value">
+
+                @((IEnumerable<dynamic>)Model).Sum(x => x.Bonus).ToString("N0") đ
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- KPI GRID -->
+
+    <div class="kpi-grid">
+
+        @foreach (var item in Model)
+        {
+            var percent = item.RevenuePercent;
+
+            if (percent > 100)
+            {
+                percent = 100;
+            }
+
+            <div class="kpi-card">
+
+                <div class="employee-name">
+
+                    @(item.Employee?.FullName ?? "Nhân viên")
+
+                </div>
+
+                <div class="employee-month">
+
+                    KPI tháng @item.Month / @item.Year
+
+                </div>
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        🎯 KPI doanh thu
+                    </div>
+
+                    <div class="info-value">
+
+                        @item.TargetRevenue.ToString("N0") đ
+
+                    </div>
+
+                </div>
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        💰 Doanh thu hiện tại
+                    </div>
+                    <div class="info-value">
+
+                        @item.CurrentRevenue.ToString("N0") đ
+
+                    </div>
+
+                </div>
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        🚗 KPI đơn hàng
+                    </div>
+
+                    <div class="info-value">
+
+                        @item.TargetOrders
+
+                    </div>
+
+                </div>
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        📦 Đơn hiện tại
+                    </div>
+
+                    <div class="info-value">
+
+                        @item.CurrentOrders
+
+                    </div>
+
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-bar" style="width:@percent%">
+
+                    </div>
+
+                </div>
+
+                <div class="percent">
+
+                    @item.RevenuePercent.ToString("0.##")%
+
+                </div>
+
+                <div class="rank-box">
+
+                    🏆 Xếp loại:
+                    @item.Rank
+
+                </div>
+
+                <div class="bonus-box">
+
+                    <div class="bonus-title">
+
+                        Thưởng KPI
+
+                    </div>
+
+                    <div class="bonus-value">
+
+                        @item.Bonus.ToString("N0") đ
+
+                    </div>
+
+                </div>
+
+                @if (item.RevenuePercent < 70)
+                {
+                    <div class="warning">
+
+                        ⚠️ Nhân viên chưa đạt KPI yêu cầu.
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>

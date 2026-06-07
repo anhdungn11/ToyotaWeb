@@ -1,0 +1,138 @@
+\@{
+    ViewData["Title"] = "Map";
+}
+
+<h2 style="text-align:center; margin-top:10px;">🚗 Bản đồ showroom Toyota</h2>
+
+<div style="text-align:center; margin-bottom:10px;">
+    <input id="searchBox" placeholder="Nhập khu vực..."
+           style="padding:10px; width:250px; border-radius:8px; border:1px solid #ccc;">
+    <button onclick="searchLocation()"
+            style="padding:10px 15px; border:none; background:#e11d48; color:white; border-radius:8px;">
+        🔍 Tìm
+    </button>
+</div>
+
+<div id="map" style="height:600px; border-radius:10px;"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<script>
+    // 🚀 tạo map
+    var map = L.map('map').setView([10.762622, 106.660172], 10);
+
+    // 🔥 nền map đẹp hơn
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+    var userLat = null;
+    var userLng = null;
+    var routeControl = null;
+
+    // 🚗 icon xe
+    var carIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/743/743131.png',
+        iconSize: [40, 40]
+    });
+
+    var userIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+        iconSize: [35, 35]
+    });
+
+    // 📍 showroom data
+    var showrooms = [
+        {
+            name: "Toyota Bình Dương",
+            lat: 10.9804,
+            lng: 106.6519,
+            img: "https://toyotabinhduong.com.vn/wp-content/uploads/2020/09/showroom.jpg"
+        },
+        {
+            name: "Toyota Thủ Đức",
+            lat: 10.8491,
+            lng: 106.7720,
+            img: "https://toyotathuduc.vn/wp-content/uploads/2021/01/showroom.jpg"
+        },
+        {
+            name: "Toyota Biên Hòa",
+            lat: 10.9447,
+            lng: 106.8243,
+            img: "https://toyotabienhoa.vn/wp-content/uploads/2020/10/showroom.jpg"
+        }
+    ];
+
+    // 📍 lấy vị trí user
+    navigator.geolocation.getCurrentPosition(function (pos) {
+        userLat = pos.coords.latitude;
+        userLng = pos.coords.longitude;
+
+        L.marker([userLat, userLng], { icon: userIcon })
+            .addTo(map)
+            .bindPopup("📍 Bạn ở đây")
+            .openPopup();
+
+        map.setView([userLat, userLng], 12);
+
+        loadShowrooms();
+    });
+
+    // 🚀 load showroom
+    function loadShowrooms() {
+        showrooms.forEach(s => {
+            var html =
+                "<div style='width:220px'>" +
+                "<img src='" + s.img + "' style='width:100%;border-radius:10px'/>" +
+                "<h4>" + s.name + "</h4>" +
+                "<button onclick='drawRoute(" + s.lat + "," + s.lng + ")' " +"style='background:#e11d48;color:white;padding:6px;border:none;border-radius:6px;width:100%'>🚗 Chỉ đường</button><br/><br/>" +
+                "<button onclick='openGoogleMap(" + s.lat + "," + s.lng + ")' " +
+                "style='background:black;color:white;padding:6px;border:none;border-radius:6px;width:100%'>🌍 Google Map</button>" +
+                "</div>";
+
+            L.marker([s.lat, s.lng], { icon: carIcon })
+                .addTo(map)
+                .bindPopup(html);
+        });
+    }
+
+    // 🚗 chỉ đường
+    function drawRoute(lat, lng) {
+        if (!userLat) return;
+
+        if (routeControl != null) {
+            map.removeControl(routeControl);
+        }
+
+        routeControl = L.Routing.control({
+            waypoints: [
+                L.latLng(userLat, userLng),
+                L.latLng(lat, lng)
+            ],
+            routeWhileDragging: false
+        }).addTo(map);
+    }
+
+    // 🌍 mở Google Maps thật
+    function openGoogleMap(lat, lng) {
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
+    }
+
+    // 🔍 search location
+    function searchLocation() {
+        var keyword = document.getElementById("searchBox").value;
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${keyword}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length > 0) {
+                    let lat = data[0].lat;
+                    let lon = data[0].lon;
+
+                    map.setView([lat, lon], 12);
+                }
+            });
+    }
+</script>

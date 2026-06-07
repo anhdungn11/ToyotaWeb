@@ -1,0 +1,136 @@
+@model ToyotaWeb.Models.Customer
+
+@{
+    Layout = "~/Areas/Sale/Views/Shared/_SaleLayout.cshtml";
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+
+        @TempData["error"]
+
+    </div>
+}
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">
+
+        @TempData["success"]
+
+    </div>
+}
+<style>
+    .page-title {
+        color: white;
+        font-size: 46px;
+        font-weight: 800;
+        margin-bottom: 35px;
+    }
+
+    .form-box {
+        background:
+            linear-gradient(135deg,
+                #111827,
+                #1e293b);
+
+        border-radius: 24px;
+
+        padding: 35px;
+
+        border: 1px solid #334155;
+    }
+
+    .form-control {
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: white;
+        border-radius: 14px;
+        padding: 14px;
+    }
+
+    .form-control:focus {
+        background: #0f172a;
+        color: white;
+        border-color: #38bdf8;
+        box-shadow: none;
+    }
+
+    label {
+        color: white;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+</style>
+
+<h1 class="page-title">
+    🚗 TẠO HỢP ĐỒNG MUA XE
+</h1>
+
+<div class="form-box">
+
+    <form method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="customerId" value="@Model.Id" />
+
+        <div class="mb-4">
+
+            <label>
+                Khách hàng
+            </label>
+
+            <input class="form-control" value="@Model.FullName" disabled />
+
+        </div>
+
+        <div class="mb-4">
+
+            <label>
+                Tên xe
+            </label>
+
+            <input name="carName" class="form-control" />
+
+        </div>
+
+        <div class="mb-4">
+
+            <label>
+                Giá xe
+            </label>
+
+            <input name="price" type="number" class="form-control" />
+
+        </div>
+
+        <div class="mb-4">
+
+            <label>
+                Tiền cọc
+            </label>
+
+            <input name="deposit" type="number" class="form-control" />
+
+        </div>
+
+        <div class="mb-4">
+
+            <label>
+                Ghi chú
+            </label>
+
+            <textarea name="note" rows="5" class="form-control"></textarea>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            Tạo hợp đồng
+
+        </button>
+
+    </form>
+
+</div>

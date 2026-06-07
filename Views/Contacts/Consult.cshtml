@@ -1,0 +1,82 @@
+@model ToyotaWeb.Models.Customer
+
+<link rel="stylesheet" href="~/css/consult.css" />
+
+<div class="consult-container">
+
+    <div class="consult-box">
+
+        <h1>Đăng ký tư vấn</h1>
+
+        <form asp-controller="Contacts" asp-action="Create" method="post">
+
+            <input asp-for="Budget" type="hidden" value="0" />
+
+            <div class="form-group">
+
+                <label>Họ tên</label>
+
+                <input asp-for="FullName" class="form-control" />
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Số điện thoại</label>
+
+                <input asp-for="Phone" class="form-control" />
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Email</label>
+
+                <input asp-for="Email" class="form-control" />
+
+            </div>
+
+            <!-- XE QUAN TÂM -->
+
+            <div class="form-group">
+
+                <label>Dòng xe quan tâm</label>
+
+                <input asp-for="InterestedCar" class="form-control" readonly />
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Địa chỉ</label>
+
+                <input asp-for="Address" class="form-control" />
+
+            </div>
+
+            <button type="submit" class="btn-submit">
+
+                GỬI TƯ VẤN
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.getElementById("InterestedCar")
+                .value = "@ViewBag.CarName";
+
+        });
+
+    </script>
+
+}

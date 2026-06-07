@@ -1,0 +1,180 @@
+@model ToyotaWeb.Models.EmployeeProfile
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .profile-wrapper {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .profile-card {
+        background:
+            linear-gradient(135deg,
+                #111827,
+                #1e293b);
+
+        border-radius: 24px;
+
+        padding: 40px;
+
+        border: 1px solid #334155;
+
+        color: white;
+    }
+
+    .top {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .avatar {
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+
+        border: 6px solid #38bdf8;
+    }
+
+    .name {
+        font-size: 42px;
+        font-weight: 800;
+    }
+
+    .code {
+        color: #38bdf8;
+        font-size: 22px;
+        margin-top: 10px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    .box {
+
+        background: #0f172a;
+
+        padding: 24px;
+
+        border-radius: 18px;
+
+        border: 1px solid #334155;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+    .item {
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
+</style>
+
+<div class="profile-wrapper">
+
+    <div class="profile-card">
+
+        <div class="top">
+
+            <img src="@Model.Avatar" class="avatar" />
+
+            <div>
+
+                <div class="name">
+                    @Model.FullName
+                </div>
+
+                <div class="code">
+                    @Model.EmployeeCode
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <div class="title">
+                    📋 Thông tin cá nhân
+                </div>
+
+                <div class="item">
+                    Họ tên:
+                    <b>@Model.FullName</b>
+                </div>
+
+                <div class="item">
+                    SĐT:
+                    <b>@Model.Phone</b>
+                </div>
+
+                <div class="item">
+                    Email:
+                    <b>@Model.Email</b>
+                </div>
+
+                <div class="item">
+                    CCCD:
+                    <b>@Model.CitizenId</b>
+                </div>
+
+                <div class="item">
+                    Địa chỉ:
+                    <b>@Model.Address</b>
+                </div>
+
+            </div>
+
+            <div class="box">
+
+                <div class="title">
+                    🏢 Hồ sơ công tác
+                </div>
+
+                <div class="item">
+                    Phòng ban:
+                    <b>@Model.Department</b>
+                </div>
+
+                <div class="item">
+                    Chức vụ:
+                    <b>@Model.Position</b>
+                </div>
+
+                <div class="item">Lương:
+                    <b>@Model.BaseSalary.ToString("N0") đ</b>
+                </div>
+
+                <div class="item">
+                    Ngày vào làm:
+                    <b>@(Model.JoinDate.HasValue ? Model.JoinDate.Value.ToString("dd/MM/yyyy") : "")</b>
+                </div>
+
+                <div class="item">
+                    Trạng thái:
+                    <b>@Model.Status</b>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

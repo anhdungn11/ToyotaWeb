@@ -1,17 +1,25 @@
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ToyotaWeb.Models;
-public class Sale
+namespace ToyotaWeb.Models
 {
-    public int Id { get; set; }
+    public class Sale
+    {
+        public int Id { get; set; }
 
-    public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-    public string Phone { get; set; }
+        [Required]
+        public string Phone { get; set; }
 
-    public string Image { get; set; }
+        [Required]
+        public string Email { get; set; }
 
-    public string Description { get; set; }
+        public string Image { get; set; }
+
+        public string Description { get; set; }
+
+        public ICollection<Contact>? Contacts { get; set; }
+    }
 }

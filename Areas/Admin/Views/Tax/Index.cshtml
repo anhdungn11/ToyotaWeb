@@ -1,0 +1,243 @@
+@model List<ToyotaWeb.Models.SaleOrder>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+    }
+
+    .tax-card {
+        background: linear-gradient(145deg, #111827, #1e293b);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+        height: 100%;
+        transition: 0.3s;
+    }
+
+    .tax-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .tax-title {
+        color: #94a3b8;
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .tax-value {
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    .table-box {
+        background: #111827;
+        padding: 25px;
+        border-radius: 20px;
+        margin-top: 30px;
+    }
+
+    .table {
+        color: white;
+    }
+
+    .table thead {
+        color: #94a3b8;
+    }
+
+    .tax-green {
+        color: #22c55e;
+    }
+
+    .tax-red {
+        color: #ef4444;
+    }
+
+    .tax-yellow {
+        color: #facc15;
+    }
+
+    .page-title {
+        font-size: 38px;
+        font-weight: 700;
+        margin-bottom: 35px;
+    }
+
+    .export-btn {
+        padding: 12px 22px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="page-title">
+            🏛️ Hệ thống quản lý thuế doanh nghiệp
+        </div>
+
+        <a href="/Admin/Tax/ExportExcel" class="btn btn-success export-btn">
+
+            📥 Xuất Excel
+
+        </a>
+
+    </div>
+
+    <!-- KPI -->
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+
+            <div class="tax-card">
+
+                <div class="tax-title">
+                    TỔNG XE ĐÃ BÁN
+                </div>
+
+                <div class="tax-value">
+                    @ViewBag.TotalCars
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="tax-card">
+
+                <div class="tax-title">
+                    TỔNG DOANH THU
+                </div>
+
+                <div class="tax-value tax-green">
+                    @ViewBag.TotalRevenue.ToString("N0") đ
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="tax-card">
+
+                <div class="tax-title">
+                    THUẾ SUẤT
+                </div>
+
+                <div class="tax-value tax-yellow">
+                    @ViewBag.TaxRate %
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="tax-card">
+
+                <div class="tax-title">
+                    TỔNG THUẾ
+                </div>
+
+                <div class="tax-value tax-red">
+                    @ViewBag.TotalTax.ToString("N0") đ
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-box">
+
+        <h3 class="mb-4">
+            📊 Chi tiết thuế từng xe
+        </h3>
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>Khách hàng</th>
+                    <th>Xe</th>
+                    <th>Giá bán</th>
+                    <th>Thuế xe</th>
+                    <th>Sale</th>
+                    <th>Ngày</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    decimal taxRate = 0;
+
+                    if (item.Price <= 3000000000)
+                    {
+                        taxRate = 0.15m;
+                    }
+                    else if (item.Price <= 50000000000)
+                    {
+                        taxRate = 0.17m;
+                    }
+                    else
+                    {
+                        taxRate = 0.20m;
+                    }
+
+                    decimal tax = item.Price * taxRate;
+
+                    <tr>
+
+                        <td>
+                            @item.CustomerName
+                        </td>
+
+                        <td>
+                            @item.CarName
+                        </td>
+
+                        <td class="tax-green fw-bold">
+                            @item.Price.ToString("N0") đ
+                        </td>
+
+                        <td class="tax-red fw-bold">
+                            @tax.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @(item.Sale != null ? item.Sale.Name : "Chưa có")
+                        </td>
+
+                        <td>
+                            @item.CreatedDate.ToString("dd/MM/yyyy")
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

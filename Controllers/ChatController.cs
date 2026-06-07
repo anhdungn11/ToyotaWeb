@@ -1,49 +1,49 @@
 using Microsoft.AspNetCore.Mvc;
-using ToyotaWeb.Models;
 using ToyotaWeb.Data;
-using System.Linq;
+using ToyotaWeb.Services;
 
 namespace ToyotaWeb.Controllers
 {
     public class ChatController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly GeminiService _gemini;
 
-        public ChatController(ApplicationDbContext context)
+        public ChatController(ApplicationDbContext context, GeminiService gemini)
         {
             _context = context;
+            _gemini = gemini;
         }
 
-        [HttpPost]
-public JsonResult Ask(string message)
+      [HttpPost]
+public async Task<IActionResult> Ask(string message)
 {
-    if (string.IsNullOrEmpty(message))
-        return Json("Bạn vui lòng nhập nội dung.");
-
-    message = message.ToLower();
-
-    // Nếu hỏi giá xe nhưng không nói tên
-    if (message.Contains("giá"))
+    try
     {
-        var danhSachXe = _context.Cars
-            .Select(x => x.Name)
-            .ToList();
+        if (string.IsNullOrEmpty(message))
+            return Json(new { reply = "Bạn vui lòng nhập nội dung." });
 
-        string ds = string.Join(", ", danhSachXe);
+        string lower = message.ToLower();
 
-        return Json("Bạn muốn hỏi giá xe nào? Hiện tại Toyota có: " + ds);
+        var xe = _context.Cars
+            .FirstOrDefault(x => lower.Contains(x.Name.ToLower()));
+
+        if (xe != null)
+        {
+            return Json(new
+            {
+                reply = $"Giá xe {xe.Name} là {xe.Price:N0} VNĐ"
+            });
+        }
+
+        var ai = await _gemini.Ask(message);
+
+        return Json(new { reply = ai });
     }
-
-    // Nếu có tên xe cụ thể
-    var xe = _context.Cars
-        .FirstOrDefault(x => message.Contains(x.Name.ToLower()));
-
-    if (xe != null)
+    catch (Exception ex)
     {
-        return Json($"Giá xe {xe.Name} hiện tại là {xe.Price:N0} VNĐ");
+        return Json(new { reply = "Lỗi server: " + ex.Message });
     }
-
-    return Json("Toyota có thể hỗ trợ bạn về giá xe, khuyến mãi hoặc thông tin sản phẩm.");
 }
     }
 }

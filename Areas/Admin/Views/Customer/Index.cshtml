@@ -1,0 +1,59 @@
+@model IEnumerable<ToyotaWeb.Models.Customer>
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h4>👤 Quản lý khách hàng</h4>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Ngân sách</th>
+                        <th>Trạng thái</th>
+                        <th>Sale</th>
+                        <th>Thao tác</th>
+                        <th>Xe quan tâm</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Email</td>
+                        <td>@item.Budget</td>
+                        <td>@item.InterestedCar</td>
+                        <td>
+                            <span class="badge bg-info">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td>@item.Sale?.Name</td>
+
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-primary">
+                                Xem
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>

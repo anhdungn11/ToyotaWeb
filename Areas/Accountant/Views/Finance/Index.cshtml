@@ -1,0 +1,281 @@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+    }
+
+    .finance-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 35px;
+    }
+
+    .finance-card {
+        background: linear-gradient(145deg, #111827, #1e293b);
+        border-radius: 22px;
+        padding: 30px;
+        height: 100%;
+        transition: 0.35s;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .finance-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-label {
+        color: #94a3b8;
+        font-size: 14px;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+    }
+
+    .card-value {
+        font-size: 38px;
+        font-weight: 800;
+    }
+
+    .glow-green {
+        color: #22c55e;
+    }
+
+    .glow-red {
+        color: #ef4444;
+    }
+
+    .glow-yellow {
+        color: #facc15;
+    }
+
+    .glow-blue {
+        color: #38bdf8;
+    }
+
+    .section-box {
+        background: #111827;
+        border-radius: 20px;
+        padding: 25px;
+        margin-top: 30px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .table {
+        color: white;
+    }
+
+    .table thead {
+        color: #94a3b8;
+    }
+
+    .badge-paid {
+        background: #22c55e;
+        padding: 8px 14px;
+        border-radius: 20px;
+    }
+
+    .badge-unpaid {
+        background: #ef4444;
+        padding: 8px 14px;
+        border-radius: 20px;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <div class="finance-title">
+        💰 ACCOUNTANT ENTERPRISE SYSTEM
+    </div>
+
+    <!-- KPI -->
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="finance-card">
+
+                <div class="card-label">
+                    TỔNG DOANH THU
+                </div>
+
+                <div class="card-value glow-green">
+                    @ViewBag.TotalRevenue.ToString("N0") đ
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="finance-card">
+
+                <div class="card-label">
+                    THUẾ DOANH NGHIỆP
+                </div>
+
+                <div class="card-value glow-yellow">
+                    @ViewBag.TotalTax.ToString("N0") đ
+                </div>
+
+                <div class="mt-2 text-secondary">
+                    Thuế suất @ViewBag.TaxRate %
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="finance-card">
+
+                <div class="card-label">
+                    HOA HỒNG SALE
+                </div>
+
+                <div class="card-value glow-blue">
+                    @ViewBag.TotalCommission.ToString("N0") đ
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="finance-card">
+
+                <div class="card-label">
+                    LỢI NHUẬN RÒNG
+                </div>
+
+                <div class="card-value glow-green">
+                    @ViewBag.NetProfit.ToString("N0") đ
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CHI PHÍ -->
+
+    <div class="section-box">
+        <div class="section-title">
+            🏢 CHI PHÍ DOANH NGHIỆP
+        </div>
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Tên chi phí</th>
+                    <th>Danh mục</th>
+                    <th>Số tiền</th>
+                    <th>Ngày</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in ViewBag.Expenses)
+                {
+                    <tr>
+
+                        <td>@item.ExpenseName</td>
+
+                        <td>@item.Category</td>
+
+                        <td class="text-danger fw-bold">
+                            @item.Amount.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @item.CreatedDate.ToString("dd/MM/yyyy")
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- BẢNG LƯƠNG -->
+
+    <div class="section-box">
+
+        <div class="section-title">
+            👨‍💼 QUẢN LÝ LƯƠNG NHÂN VIÊN
+        </div>
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Nhân viên</th>
+                    <th>Lương cứng</th>
+                    <th>Bonus</th>
+                    <th>Hoa hồng</th>
+                    <th>Tổng lương</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in ViewBag.Salaries)
+                {
+                    <tr>
+
+                        <td>@item.EmployeeName</td>
+
+                        <td>
+                            @item.BaseSalary.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @item.Bonus.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @item.Commission.ToString("N0") đ
+                        </td>
+
+                        <td class="text-success fw-bold">
+                            @item.TotalSalary.ToString("N0") đ
+                        </td>
+
+                        <td>
+
+                            @if (item.IsPaid)
+                            {
+                                <span class="badge-paid">
+                                    Đã chuyển
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge-unpaid">
+                                    Chưa chuyển
+                                </span>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

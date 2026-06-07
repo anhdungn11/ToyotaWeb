@@ -1,123 +1,160 @@
 @model ToyotaWeb.Models.Car
+@using ToyotaWeb.Models
+@using System.Globalization
+
+<link rel="stylesheet" href="~/css/details.css" />
 
 @{
-    ViewData["Title"] = Model.Name;
-}
-<div class="car-detail-container">
+    var images = Model.CarImages?.ToList() ?? new List<CarImage>();
 
-    <div class="car-left">
+    string mainImage = "";
 
-        @{
-            var mainImage = Model.CarImages?
-                .FirstOrDefault()?.ImageUrl;
-        }
-
-        @if (!string.IsNullOrEmpty(mainImage))
-        {
-            <img src="@Url.Content("~/images/cars/" + mainImage)" class="main-image" id="mainImg" alt="@Model.Name" />
-        }
-        else
-        {
-            <img src="~/images/no-image.jpg" class="main-image" id="mainImg" alt="No Image" />
-        }
-
-        @if (Model.CarImages != null && Model.CarImages.Count > 1)
-        {
-            <div class="thumbnail-list">
-                @foreach (var img in Model.CarImages)
-                {
-                    <img src="@Url.Content("~/images/cars/" + img.ImageUrl)" class="thumb" onclick="changeImage(this)"
-                         alt="thumbnail" />
-                }
-            </div>
-        }
-
-    </div>
-
-    <div class="car-right">
-        <h1>@Model.Name</h1>
-      <div class="car-video">
-    <video controls>
-        <source src="/Videos/@(Model.Slug).mp4" type="video/mp4">
-    </video>
-</div>
-        <p>@Model.Description</p>
-    </div>
-
-</div>
-
-<hr />
-
-<h2>Phiên bản</h2>
-
-<div class="variant-grid">
-    @if (Model.CarVariants != null && Model.CarVariants.Any(v => v.IsAvailable))
+    // Ưu tiên ảnh màu xe
+    if (images.Any())
     {
-        foreach (var variant in Model.CarVariants.Where(v => v.IsAvailable))
-        {
-            <div class="variant-card">
-                <h3>@variant.VariantName</h3>
-                <p>Động cơ: @variant.Engine</p>
-                <p>Hộp số: @variant.Transmission</p>
-                <p>Dẫn động: @variant.DriveType</p>
-
-                <p class="price">
-                    @variant.Price.ToString("N0") VNĐ
-                </p>
-
-                <a asp-controller="Variant" asp-action="Details" asp-route-id="@variant.VariantId" class="btn-detail">
-                    Xem chi tiết
-                </a>
-            </div>
-        }
+        mainImage = Url.Content("~/images/cars/" + images.First().ImageUrl);
     }
+    // Nếu không có thì lấy ảnh upload
+    else if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        mainImage = Model.ImageUrl;
+    }
+    // fallback
     else
     {
-        <p>Hiện chưa có phiên bản khả dụng.</p>
+        mainImage = Url.Content("~/images/no-image.jpg");
     }
-</div>
-<script>
-    function changeImage(element) {
-        document.getElementById("mainImg").src = element.src;
-    }
-</script>
-<hr class="my-5" />
+}
 
-<h3>Xem Thêm Các Dòng Xe Khác</h3>
+<div class="car-detail-container">
 
-<div class="row">
-@foreach (var item in ViewBag.RelatedCars as List<Car>)
-{
-    var imageUrl = item.CarImages?.FirstOrDefault()?.ImageUrl;
+    <!-- LEFT -->
+    <div class="car-left">
 
-    <div class="col-md-3 mb-4">
-        <div class="card h-100 shadow-sm">
+        <img id="mainImg" src="@mainImage" class="main-image" />
 
-            @if (!string.IsNullOrEmpty(imageUrl))
+        <div class="color-list">
+
+            @* NẾU CÓ HỆ ĐỔI MÀU XE *@
+            @if (images.Any())
             {
-                <img src="@Url.Content("~/images/cars/" + imageUrl)"
-                     class="card-img-top"
-                     alt="@item.Name"
-                     style="height:220px; object-fit:cover;" />
+                @foreach (var img in images)
+                {
+                    <img src="@Url.Content("~/images/cars/" + img.ImageUrl)" class="color-item" onclick="changeImage(this)" />
+                }
             }
-            else
+            @* NẾU CHỈ UPLOAD 1 ẢNH *@
+            else if (!string.IsNullOrEmpty(Model.ImageUrl))
             {
-                <img src="@Url.Content("~/images/no-image.png")"
-                     class="card-img-top"
-                     style="height:220px; object-fit:cover;" />
+                <img src="@Model.ImageUrl" class="color-item active" onclick="changeImage(this)" />
             }
-
-            <div class="card-body">
-                <h6 class="card-title">@item.Name</h6>
-
-                <a asp-action="Details"
-                   asp-route-slug="@item.Slug"
-                   class="btn btn-outline-danger btn-sm">
-                    Xem chi tiết
-                </a>
-            </div>
 
         </div>
+
     </div>
-}
+
+    <!-- RIGHT -->
+    <div class="car-right">
+
+        <h1>@Model.Name</h1>
+
+        <p class="price">
+            Từ @Model.Price.ToString("N0") đ
+        </p>
+
+        <!-- ACTION -->
+        <div class="car-actions">
+
+            <a asp-controller="DangKyLaiThu" asp-action="Create" asp-route-dongXe="@Model.Name" class="btn-action red">
+
+                Đăng ký lái thử
+
+            </a>
+
+            <a asp-controller="Car" asp-action="Estimate" asp-route-slug="@Model.Slug" class="btn-action black">
+
+                Dự toán
+
+            </a>
+
+            <a asp-controller="Rolling" asp-action="Index" asp-route-slug="@Model.Slug" class="btn-action outline">
+
+                Giá lăn bánh
+
+            </a>
+            <a asp-controller="Contacts" asp-action="Consult" asp-route-carName="@Model.Name"
+               class="btn-action consult-btn">
+
+                Tư vấn ngay
+
+            </a>
+
+        </div>
+
+        <!-- VIDEO -->
+        <div class="car-video">
+
+            <video controls width="100%">
+
+                <source src="/Videos/@(Model.Slug).mp4" type="video/mp4">
+
+            </video>
+
+        </div>
+
+        <div class="car-info">
+
+            <p>
+                <b>Loại xe:</b>
+                @Model.BodyType
+            </p>
+
+            <p>
+                <b>Số chỗ:</b>
+                @Model.Seats
+            </p>
+
+            <p>
+                <b>Nhiên liệu:</b>
+                @Model.FuelType
+            </p>
+
+            <p><b>Xuất xứ:</b>
+                @Model.Origin
+            </p>
+
+        </div>
+
+        <p class="description">
+            @Model.Description
+        </p>
+
+    </div>
+
 </div>
+
+    </div>
+
+</div>
+<script>
+
+    function changeImage(el) {
+        let main = document.getElementById("mainImg");
+
+        main.src = el.src;
+
+        document.querySelectorAll(".color-item")
+            .forEach(x => x.classList.remove("active"));
+
+        el.classList.add("active");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let first = document.querySelector(".color-item");
+
+        if (first) {
+            first.classList.add("active");
+        }
+    });
+
+</script>

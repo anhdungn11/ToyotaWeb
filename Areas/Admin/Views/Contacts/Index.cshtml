@@ -1,90 +1,398 @@
 @model List<ToyotaWeb.Models.Contact>
 
-<h2>Quản lý tư vấn</h2>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Họ tên</th>
-            <th>SĐT</th>
-            <th>Email</th>
-            <th>Xe quan tâm</th>
-            <th>Nội dung</th>
-            <th>Ngày gửi</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    int total = Model.Count;
+    int called = Model.Count(x => x.IsCalled);
+    int pending = total - called;
+}
+
+<style>
+
+    body{
+        background:#0f172a;
+    }
+
+    .page-title{
+
+        color:white;
+        font-size:52px;
+        font-weight:900;
+
+        margin-bottom:35px;
+    }
+
+    .stats-grid{
+
+        display:grid;
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+        gap:25px;
+
+        margin-bottom:35px;
+    }
+
+    .stat-card{
+
+        background:
+            linear-gradient(
+                145deg,
+                #111827,
+                #1e293b
+            );
+
+        border-radius:24px;
+
+        padding:30px;
+
+        color:white;
+
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .stat-number{
+
+        font-size:42px;
+        font-weight:900;
+    }
+
+    .contact-table{
+
+        background:white;
+
+        border-radius:20px;
+
+        overflow:hidden;
+    }
+
+    .table th{
+
+        background:#111827;
+        color:white;
+
+        border:none;
+    }
+
+    .badge-called{
+
+        background:#16a34a;
+        color:white;
+
+        padding:8px 14px;
+
+        border-radius:30px;
+
+        font-size:13px;
+    }
+
+    .badge-pending{
+
+        background:#dc2626;
+        color:white;
+
+        padding:8px 14px;
+
+        border-radius:30px;
+
+        font-size:13px;
+    }
+
+    .sale-name{
+
+        font-weight:700;
+        color:#2563eb;
+    }
+
+    .btn-action{
+
+        border:none;
+
+        padding:8px 14px;
+
+        border-radius:10px;
+
+        color:white;
+
+        font-size:13px;
+        font-weight:700;
+
+        text-decoration:none;
+
+        margin-right:5px;
+    }
+
+    .btn-sale{
+        background:#2563eb;
+    }
+
+    .btn-call{
+        background:#16a34a;
+    }
+
+    .btn-delete{
+        background:#dc2626;
+    }
+
+    textarea{
+
+        border-radius:12px !important;
+    }
+
+</style>
+
+<h1 class="page-title">
+    📞 QUẢN LÝ KHÁCH TƯ VẤN
+</h1>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div>Tổng khách</div>
+
+        <div class="stat-number">
+            @total
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div>Đã gọi</div>
+
+        <div class="stat-number">
+            @called
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div>Chưa gọi</div>
+
+        <div class="stat-number">
+            @pending
+        </div>
+
+    </div>
+
+</div>
+
+<div class="contact-table">
+
+    <table class="table table-hover align-middle mb-0">
+
+        <thead>
+
             <tr>
-                <td>@item.FullName</td>
-                <td>@item.Phone</td>
-                <td>@item.Email</td>
-                <td>@item.CarName</td>
-                <td>@item.Message</td>
-                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>
-                    @if (item.IsCalled)
-                    {
-                        <span class="text-success">✔ Đã gọi</span>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Chưa gọi</span>
-                    }
-                </td>
-                <td>
-                    @if (!item.IsCalled)
-                    {
-                        <form asp-area="Admin"
-                              asp-controller="Contact"
-                              asp-action="MarkAsCalled"
-                              method="post">
-                            <input type="hidden" name="id" value="@item.Id" />
-                            <input type="hidden" name="note" value="Đã gọi khách" />
-                            <button type="submit" class="btn btn-success btn-sm">
-                                 Đánh dấu đã gọi
-                            </button>
-                        </form>
-                    }
 
-                    <form asp-area="Admin"
-                          asp-controller="Contact"
-                          asp-action="Delete"
-                          method="post"
-                          style="display:inline;">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Xóa
-                        </button>
-                    </form>
-                </td>
+                <th>Khách hàng</th>
+                <th>Liên hệ</th>
+                <th>Xe quan tâm</th>
+                <th>Sale phụ trách</th>
+                <th>Trạng thái</th>
+                <th width="350">Thao tác</th>
+
             </tr>
-        }
-        <script>
-function showCallBox(id) {
-    document.getElementById("callbox-" + id).style.display = "block";
-}
 
-function saveCall(id) {
-    var note = document.getElementById("note-" + id).value;
+        </thead>
 
-    fetch('/Admin/Contacts/MarkAsCalled', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'id=' + id + '&note=' + encodeURIComponent(note)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr><td>
+
+                        <b>@item.FullName</b>
+
+                        <br />
+
+                        <small class="text-muted">
+                            @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                        </small>
+
+                    </td>
+
+                    <td>
+
+                        @item.Phone
+
+                        <br />
+
+                        <small>
+                            @item.Email
+                        </small>
+
+                    </td>
+
+                    <td>
+
+                        <b>@item.CarName</b>
+
+                        <br />
+
+                        <small class="text-muted">
+                            @item.Message
+                        </small>
+
+                    </td>
+
+                    <td>
+
+                        @if (item.Sale != null)
+                        {
+                            <span class="sale-name">
+                                @item.Sale.Name
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Chưa giao Sale
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @if (item.IsCalled)
+                        {
+                            <span class="badge-called">
+                                Đã gọi
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge-pending">
+                                Chưa gọi
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        <a asp-action="AssignSale"
+                           asp-route-id="@item.Id"
+                           class="btn-action btn-sale">
+
+                            Giao Sale
+
+                        </a>
+
+                        @if (!item.IsCalled)
+                        {
+                            <button onclick="toggleNote(@item.Id)"
+                                    class="btn-action btn-call">
+
+                                Đã gọi
+
+                            </button>
+                        }
+
+                        <form asp-action="Delete"
+                              method="post"
+                              style="display:inline;">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@item.Id" />
+
+                            <button type="submit"
+                                    class="btn-action btn-delete">
+
+                                Xóa
+
+                            </button>
+
+                        </form>
+
+                        <!-- BOX GHI CHÚ -->
+
+                        <div id="callbox-@item.Id" style="display:none; margin-top:15px;">
+
+                            <textarea id="note-@item.Id" class="form-control" rows="3"
+                                      placeholder="Nhập ghi chú sau khi gọi..."></textarea>
+
+                            <br />
+
+                            <button onclick="saveCall(@item.Id)" class="btn btn-success btn-sm">
+
+                                Lưu ghi chú
+
+                            </button>
+
+                            <button onclick="toggleNote(@item.Id)" class="btn btn-secondary btn-sm">
+
+                                Hủy
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+    function toggleNote(id) {
+        let box =
+            document.getElementById(
+                "callbox-" + id
+            );
+
+        if (box.style.display === "none") {
+            box.style.display = "block";
         }
-    });
-}
+        else {
+            box.style.display = "none";
+        }
+    }
+
+    function saveCall(id) {
+        var note =
+            document.getElementById(
+                "note-" + id
+            ).value;
+
+        fetch('/Admin/Contacts/MarkAsCalled',
+            {
+                method: 'POST',
+
+                headers:
+                {
+                    'Content-Type':
+                        'application/x-www-form-urlencoded'
+                },
+
+                body:
+                    'id=' + id +
+                    '&note=' +
+                    encodeURIComponent(note)
+            })
+
+            .then(res => res.json())
+
+            .then(data => {
+                if (data.success) {
+                    alert("Đã lưu ghi chú");
+
+                    location.reload();
+                }
+            });
+    }
+
 </script>
-    </tbody>
-</table>

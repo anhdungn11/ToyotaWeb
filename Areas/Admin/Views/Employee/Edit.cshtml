@@ -1,0 +1,402 @@
+@model ToyotaWeb.Models.EmployeeProfile
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+    }
+
+    .edit-container {
+
+        max-width: 1350px;
+        margin: auto;
+        padding: 40px;
+
+    }
+
+    .edit-card {
+
+        background: linear-gradient(145deg, #0f172a, #172554);
+        border-radius: 28px;
+        padding: 45px;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.45);
+
+    }
+
+    .page-title {
+
+        color: white;
+        font-size: 58px;
+        font-weight: 900;
+        margin-bottom: 40px;
+
+    }
+
+    .section-box {
+
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 20px;
+        padding: 30px;
+        height: 100%;
+
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+    }
+
+    .section-title {
+
+        color: #7dd3fc;
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 30px;
+
+    }
+
+    .form-label {
+
+        color: #e2e8f0;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: block;
+
+    }
+
+    .form-control,
+    .form-select {
+
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        color: white;
+
+        border-radius: 14px;
+        padding: 14px;
+
+        transition: 0.3s;
+
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+
+        border-color: #38bdf8;
+
+        box-shadow:
+            0 0 15px rgba(56, 189, 248, 0.35);
+
+    }
+
+    .form-control::placeholder {
+
+        color: #cbd5e1;
+
+    }
+
+    .form-select option {
+
+        background: #0f172a;
+        color: white;
+
+    }
+
+    .profile-preview {
+
+        width: 140px;
+        height: 140px;
+
+        border-radius: 50%;
+        object-fit: cover;
+
+        border: 5px solid #38bdf8;
+
+        margin-bottom: 25px;
+
+        box-shadow:
+            0 0 20px rgba(56, 189, 248, 0.4);
+
+    }
+
+    .save-btn {
+
+        background: linear-gradient(to right, #22c55e, #16a34a);
+
+        border: none;
+
+        padding: 15px 40px;
+
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+
+        border-radius: 14px;
+
+        transition: 0.3s;
+
+    }
+
+    .save-btn:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px rgba(34, 197, 94, 0.45);
+
+    }
+
+    .danger-btn {
+
+        background: linear-gradient(to right, #ef4444, #dc2626);
+
+        border: none;
+
+        padding: 15px 35px;
+
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+
+        border-radius: 14px;
+
+        margin-left: 15px;
+        text-decoration: none;
+
+        display: inline-block;
+
+        transition: 0.3s;
+
+    }
+
+    .danger-btn:hover {
+
+        color: white;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px rgba(239, 68, 68, 0.45);
+
+    }
+</style>
+
+<div class="edit-container">
+
+    <div class="edit-card"><h1 class="page-title">
+            ✏️ Chỉnh sửa nhân viên
+        </h1>
+
+        <form method="post" enctype="multipart/form-data">
+
+            <input asp-for="Id" hidden />
+
+            <div class="row g-4">
+
+                <!-- LEFT -->
+
+                <div class="col-md-6">
+
+                    <div class="section-box">
+
+                        <div class="section-title">
+                            👤 Thông tin cá nhân
+                        </div>
+
+                        @{
+                            var imageUrl =
+                            Model?.GetType()
+                            .GetProperty("ImageUrl")
+                            ?.GetValue(Model) as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(imageUrl))
+                        {
+                            <img src="@imageUrl"
+                                 class="profile-preview" />
+                        }
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Họ và tên
+                            </label>
+
+                            <input asp-for="FullName"
+                                   class="form-control"
+                                   placeholder="Nhập họ tên nhân viên" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Số điện thoại
+                            </label>
+
+                            <input asp-for="Phone"
+                                   class="form-control"
+                                   placeholder="Nhập số điện thoại" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Nhập email" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Địa chỉ
+                            </label>
+
+                            <input asp-for="Address"
+                                   class="form-control"
+                                   placeholder="Nhập địa chỉ" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                CCCD / CMND
+                            </label>
+
+                            <input asp-for="CitizenId"
+                                   class="form-control"
+                                   placeholder="Nhập CCCD" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="section-box">
+
+                        <div class="section-title">
+                            🏢 Hồ sơ công tác
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phòng ban
+                            </label>
+
+                            <input asp-for="Department" class="form-control" placeholder="Ví dụ: Sale" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Chức vụ
+                            </label>
+
+                            <input asp-for="Position" class="form-control" placeholder="Ví dụ: Trưởng phòng kinh doanh" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Lương cơ bản
+                            </label>
+
+                            <input asp-for="BaseSalary" class="form-control" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Trạng thái làm việc
+                            </label>
+
+                            <select asp-for="Status" class="form-select text-white">
+
+                                <option>
+                                    Đang làm việc
+                                </option>
+
+                                <option>
+                                    Nghỉ việc
+                                </option>
+
+                                <option>
+                                    Tạm nghỉ
+                                </option>
+
+                                <option>
+                                    Thử việc
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Ngày vào làm
+                            </label>
+
+                            <input asp-for="JoinDate" type="date" class="form-control" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Ảnh đại diện mới
+                            </label>
+
+                            <input type="file" name="ImageFile" class="form-control" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-5">
+
+                <button type="submit" class="save-btn">
+
+                    💾 Lưu thay đổi
+
+                </button>
+
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="danger-btn">
+
+                    🗑️ Xóa nhân viên
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

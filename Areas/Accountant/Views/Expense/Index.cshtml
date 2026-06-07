@@ -1,0 +1,195 @@
+@model IEnumerable<ToyotaWeb.Models.CompanyExpense>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-box {
+        padding: 40px;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: white;
+    }
+
+    .btn-add {
+        background: linear-gradient(135deg,#22c55e,#16a34a);
+        color: white;
+        padding: 14px 24px;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .table-box {
+        background: #111827;
+        padding: 30px;
+        border-radius: 22px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    .table {
+        margin-top: 10px;
+        color: white;
+    }
+
+    .table thead {
+        background: #1e293b;
+    }
+
+    .table thead th {
+        border: none;
+        padding: 18px;
+        color: #cbd5e1;
+    }
+
+    .table tbody tr {
+        background: #0f172a;
+        transition: 0.3s;
+    }
+
+    .table tbody tr:hover {
+        background: #1e293b;
+    }
+
+    .table tbody td {
+        padding: 18px;
+        border-color: #1e293b;
+        vertical-align: middle;
+    }
+
+    .money {
+        color: #22c55e;
+        font-weight: 700;
+    }
+
+    .btn-edit {
+        background: #f59e0b;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        margin-right: 5px;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+</style>
+
+<div class="page-box">
+
+    <div class="top-bar">
+
+        <h1 class="page-title">
+            💸 QUẢN LÝ CHI PHÍ
+        </h1>
+
+        <a href="/Accountant/Expense/Create"
+           class="btn-add">
+
+            + Thêm chi phí
+
+        </a>
+
+    </div>
+
+    <div class="table-box">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Tên chi phí</th>
+
+                    <th>Danh mục</th>
+
+                    <th>Số tiền</th>
+
+                    <th>Ngày</th>
+
+                    <th>Thao tác</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @item.ExpenseName
+                        </td>
+
+                        <td>
+                            @item.Category
+                        </td>
+
+                        <td class="money">@item.Amount.ToString("N0") đ
+                        </td>
+
+                        <td>
+                            @item.CreatedDate.ToString("dd/MM/yyyy")
+                        </td>
+
+                        <td>
+
+                            <a href="/Accountant/Expense/Edit/@item.Id" class="btn-edit">
+
+                                Sửa
+
+                            </a>
+
+                            <a href="/Accountant/Expense/Delete/@item.Id" class="btn-delete">
+
+                                Xóa
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

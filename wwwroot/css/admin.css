@@ -1,0 +1,73 @@
+body {
+    background: #f5f6fa;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #111;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.admin-sidebar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-sidebar a {
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.admin-sidebar a:hover {
+    background: #e60000;
+    color: white;
+}
+
+/* HEADER */
+.admin-header {
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+.admin-sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #111;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-sidebar .logo {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.admin-sidebar a {
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.admin-sidebar a:hover {
+    background: #e60000;
+    color: white;
+}
+
+.admin-header {
+    background: white;
+    border-bottom: 1px solid #ddd;
+}

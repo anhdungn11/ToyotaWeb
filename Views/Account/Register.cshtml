@@ -1,0 +1,33 @@
+@model ToyotaWeb.Models.RegisterViewModel
+<link rel="stylesheet" href="~/css/auth.css?v=999" />
+
+<div class="auth-container">
+    <h2>Đăng ký</h2>
+
+    <form asp-action="Register" method="post">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="FullName" placeholder="Họ và tên" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+
+        <input asp-for="Phone" placeholder="Số điện thoại" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+
+        <input asp-for="Address" placeholder="Địa chỉ" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+
+        <input asp-for="Email" placeholder="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <input asp-for="Password" type="password" placeholder="Mật khẩu" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <input asp-for="ConfirmPassword" type="password" placeholder="Nhập lại mật khẩu" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+        <button type="submit">Đăng ký</button>
+    </form>
+
+    <p>Đã có tài khoản? <a href="/Account/Login">Đăng nhập</a></p>
+</div>
+</div>

@@ -1,0 +1,54 @@
+@model List<ToyotaWeb.Models.Contact>
+
+<h2>Khách hàng được giao</h2>
+
+<table class="table table-bordered">
+
+<thead>
+<tr>
+<th>Khách</th>
+<th>SĐT</th>
+<th>Email</th>
+<th>Xe quan tâm</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+
+<tbody>
+
+@foreach(var item in Model)
+{
+<tr>
+
+<td>@item.FullName</td>
+<td>@item.Phone</td>
+<td>@item.Email</td>
+<td>@item.CarName</td>
+
+<td>
+
+@if(item.IsCalled)
+{
+<span class="text-success"> Đã gọi tư vấn</span>
+}
+else
+{
+<form method="post" action="/Sale/MarkAsCalled">
+
+<input type="hidden" name="id" value="@item.Id"/>
+
+<button class="btn btn-success btn-sm">
+Đã gọi tư vấn
+</button>
+
+</form>
+}
+
+</td>
+
+</tr>
+}
+
+</tbody>
+
+</table>

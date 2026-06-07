@@ -1,43 +1,50 @@
-@model ToyotaWeb.Models.TestDrive
+@model ToyotaWeb.Models.Customer
 
 @{
-    ViewData["Title"] = "Chi tiết đăng ký";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
+<h2>👤 Hồ sơ khách hàng</h2>
 
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4> Thông tin khách hàng</h4>
-        </div>
-
-        <div class="card-body">
-
-            <dl class="row">
-                <dt class="col-sm-3">Họ tên</dt>
-                <dd class="col-sm-9">@Model.FullName</dd>
-
-                <dt class="col-sm-3">Điện thoại</dt>
-                <dd class="col-sm-9">@Model.Phone</dd>
-
-                <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-9">@Model.Email</dd>
-
-                <dt class="col-sm-3">Mẫu xe</dt>
-                <dd class="col-sm-9">@Model.CarName</dd>
-
-                <dt class="col-sm-3">Ngày đăng ký</dt>
-                <dd class="col-sm-9">@Model.RegisterDate</dd>
-
-                <dt class="col-sm-3">Ghi chú</dt>
-                <dd class="col-sm-9">@Model.Note</dd>
-            </dl>
-
-            <a asp-action="Index" class="btn btn-secondary">
-                Quay lại
-            </a>
-
-        </div>
-    </div>
-
+<div class="card p-3 mb-3">
+    <h4>@Model.FullName</h4>
+    <p>📞 @Model.Phone</p>
+    <p>📧 @Model.Email</p>
+    <p>📍 @Model.Address</p>
+    <p>💰 Ngân sách: @Model.Budget</p>
+    <p>📌 Trạng thái: @Model.Status</p>
 </div>
+
+<hr />
+
+<h4>🚗 Xe đã mua</h4>
+
+<table class="table">
+    <tr>
+        <th>Xe</th>
+        <th>Giá</th>
+        <th>Ngày mua</th>
+    </tr>
+
+    @foreach (var car in ViewBag.Cars)
+    {
+        <tr>
+            <td>@car.CarName</td>
+            <td>@car.Price</td>
+            <td>@car.PurchaseDate.ToString("dd/MM/yyyy")</td>
+        </tr>
+    }
+</table>
+
+<hr />
+
+<h4>📞 Lịch sử tư vấn</h4>
+
+<ul class="list-group">
+    @foreach (var item in ViewBag.Interactions)
+    {
+        <li class="list-group-item">
+            <b>@item.CreatedAt:</b> @item.Content
+        </li>
+    }
+</ul>

@@ -1,0 +1,178 @@
+@model List<ToyotaWeb.Models.SaleOrder>
+
+@{
+    ViewData["Title"] = "Quản lý doanh thu";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            💼 Hệ thống doanh thu doanh nghiệp
+        </h2>
+
+        <a asp-action="Create"
+           class="btn btn-success">
+            + Tạo đơn hàng
+        </a>
+
+    </div>
+
+    <!-- KPI -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-0 bg-dark text-white">
+
+                <div class="card-body">
+
+                    <h6>TỔNG DOANH THU</h6>
+
+                    <h2 class="text-success">
+                        @ViewBag.TotalRevenue.ToString("N0") đ
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-0 bg-dark text-white">
+
+                <div class="card-body">
+
+                    <h6>CÔNG NỢ</h6>
+
+                    <h2 class="text-danger">
+                        @ViewBag.TotalDebt.ToString("N0") đ
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-0 bg-dark text-white">
+
+                <div class="card-body">
+
+                    <h6>ĐƠN HÀNG</h6>
+
+                    <h2>
+                        @ViewBag.TotalOrders
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-dark text-white">
+            📊 Danh sách giao dịch doanh nghiệp
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Khách hàng</th>
+
+                        <th>Xe</th>
+
+                        <th>Sale</th>
+
+                        <th>Giá</th>
+
+                        <th>Đã trả</th>
+
+                        <th>Công nợ</th>
+
+                        <th>Showroom</th>
+
+                        <th>Ngày</th>
+
+                        <th width="180">Thao tác</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.CustomerName
+                            </td>
+
+                            <td>
+                                @item.CarName
+                            </td>
+
+                            <td>
+                                @(item.Sale != null ? item.Sale.Name : "Chưa có")
+                            </td>
+
+                            <td class="text-success fw-bold">@item.Price.ToString("N0") đ
+                            </td>
+
+                            <td class="text-primary fw-bold">
+                                @item.Paid.ToString("N0") đ
+                            </td>
+
+                            <td class="text-danger fw-bold">
+                                @item.Debt.ToString("N0") đ
+                            </td>
+
+                            <td>
+                                @item.Showroom
+                            </td>
+
+                            <td>
+                                @item.CreatedDate.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                    Sửa
+                                </a>
+
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                    Xóa
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

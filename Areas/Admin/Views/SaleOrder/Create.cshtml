@@ -1,0 +1,71 @@
+@model ToyotaWeb.Models.SaleOrder
+
+@{
+    ViewData["Title"] = "Tạo đơn hàng";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">💰 Tạo đơn hàng doanh nghiệp</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create" method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Khách hàng</label>
+                    <input asp-for="CustomerName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tên xe</label>
+                    <input asp-for="CarName" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Giá xe</label>
+                    <input asp-for="Price" class="form-control" type="number" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Khách đã trả</label>
+                    <input asp-for="Paid" class="form-control" type="number" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Showroom</label>
+                    <input asp-for="Showroom" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nhân viên Sale</label>
+
+                    <select asp-for="SaleId" class="form-control">
+                        <option value="">-- Chọn Sale --</option>
+
+                        @foreach (var sale in ViewBag.Sales)
+                        {
+                            <option value="@sale.Id">
+                                @sale.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">
+                    🚀 Tạo đơn hàng
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

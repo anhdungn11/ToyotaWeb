@@ -1,55 +1,50 @@
 using Microsoft.AspNetCore.Mvc;
+using ToyotaWeb.Data;
 using ToyotaWeb.Models;
+using System.Linq;
 
 public class SaleController : Controller
 {
+    private readonly ApplicationDbContext _context;
+
+    public SaleController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
     public IActionResult Index()
     {
-        var sales = new List<Sale>()
-        {
-            new Sale{
-                Id=1,
-                Name="Nguyễn Anh Dũng",
-                Phone="0384508388",
-                Image="NV1.jpg",
-                Description="Chuyên tư vấn dòng xe SUV và Sedan"
-            },
-
-            new Sale{
-                Id=2,
-                Name="Nguyễn Hữu Vũ",
-                Phone="0392040105",
-                Image="NV2.jpg",
-                Description="Tư vấn xe gia đình và xe hybrid"
-            }
-        };
+        var sales = _context.Sales.ToList();
 
         return View(sales);
     }
 
     public IActionResult Details(int id)
     {
-        var sales = new List<Sale>()
-        {
-            new Sale{
-                Id=1,
-                Name="Nguyễn Anh Dũng",
-                Phone="0384508388",
-                Image="NV1.jpg",
-                Description="Chuyên tư vấn dòng xe SUV và Sedan"
-            },
+        var sale = _context.Sales.FirstOrDefault(x => x.Id == id);
 
-            new Sale{
-                Id=2,
-                Name="Nguyễn Hữu Vũ",
-                Phone="0392040105",
-                Image="NV2.jpg",
-                Description="Tư vấn xe gia đình và xe hybrid"
-            }
-        };
-
-        var sale = sales.FirstOrDefault(x => x.Id == id);
+        if (sale == null)
+            return NotFound();
 
         return View(sale);
     }
+    public IActionResult MyCustomers(int id)
+{
+    var customers = _context.Contacts
+        .Where(x => x.SaleId == id)
+        .ToList();
+
+    return View(customers);
+}
+[HttpPost]
+public IActionResult MarkAsCalled(int id)
+{
+    var contact = _context.Contacts.Find(id);
+
+    contact.IsCalled = true;
+
+    _context.SaveChanges();
+
+    return RedirectToAction("MyCustomers", new { id = contact.SaleId });
+}
 }

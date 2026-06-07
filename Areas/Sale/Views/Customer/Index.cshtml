@@ -1,0 +1,200 @@
+@model List<ToyotaWeb.Models.Customer>
+
+@{
+    Layout = "~/Areas/Sale/Views/Shared/_SaleLayout.cshtml";
+}
+
+<style>
+
+    .page-title{
+        color:white;
+        font-size:42px;
+        font-weight:800;
+        margin-bottom:35px;
+    }
+
+    .crm-card{
+        background:
+            linear-gradient(
+                135deg,
+                #111827,
+                #1e293b
+            );
+
+        border-radius:24px;
+
+        padding:30px;
+
+        border:1px solid #334155;
+
+        box-shadow:
+            0 0 30px rgba(0,0,0,0.3);
+    }
+
+    .crm-table{
+        width:100%;
+        color:white;
+    }
+
+    .crm-table th{
+        color:#94a3b8;
+        padding:18px;
+        border-bottom:1px solid #334155;
+    }
+
+    .crm-table td{
+        padding:18px;
+        border-bottom:1px solid #1e293b;
+    }
+
+    .badge-status{
+        padding:8px 14px;
+        border-radius:999px;
+        font-size:13px;
+        font-weight:700;
+    }
+
+    .new{
+        background:#052e16;
+        color:#22c55e;
+    }
+
+    .processing{
+        background:#172554;
+        color:#38bdf8;
+    }
+
+    .done{
+        background:#3f1d0d;
+        color:#f59e0b;
+    }
+
+</style>
+
+<h1 class="page-title">
+    👥 CUSTOMER CRM
+</h1>
+
+<div class="crm-card">
+
+    <table class="crm-table">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Khách hàng
+                </th>
+
+                <th>
+                    Điện thoại
+                </th>
+
+                <th>
+                    Email
+                </th>
+
+                <th>
+                    Ngân sách
+                </th>
+
+                <th>
+                    Trạng thái
+                </th>
+
+                <th>
+                    Sale phụ trách
+                </th>
+
+                <th>
+                    Ngày tạo
+                </th>
+                <th>
+                    Xe quan tâm
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+
+                        <a href="/Sale/Customer/Details/@item.Id" style="
+                            color:white;
+                            text-decoration:none;
+                            font-weight:700;
+                            ">
+
+                            @item.FullName
+
+                        </a>
+
+                    </td>
+
+                    <td>
+                        @item.Phone
+                    </td>
+
+                    <td>
+                        @item.Email
+                    </td>
+
+                    <td style="color:#22c55e;font-weight:700">
+
+                        @(item.Budget?.ToString("N0") ?? "0") đ
+
+                    </td>
+
+                    <td>
+
+                        @if(item.Status == "Mới")
+                        {
+                            <span class="badge-status new">
+                                @item.Status
+                            </span>
+                        }
+                        else if(item.Status == "Đang chăm sóc")
+                        {
+                            <span class="badge-status processing">
+                                @item.Status
+                            </span>
+                        }
+                        else
+                        {
+
+                            <span class="badge-status done">
+                                @item.Status
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @(item.Sale?.Name ?? "Chưa có")
+
+                    </td>
+
+                    <td>
+
+                        @item.CreatedAt.ToString("dd/MM/yyyy")
+
+                    </td>
+                    <td>
+                        @item.InterestedCar
+                    </td>   
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

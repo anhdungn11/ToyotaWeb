@@ -1,0 +1,341 @@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        background: #0f172a;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .dashboard-box {
+        padding: 40px;
+    }
+
+    .dashboard-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 35px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .finance-card {
+        background: linear-gradient(135deg, #111827, #1e293b);
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid #334155;
+        transition: 0.3s;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .finance-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-label {
+        font-size: 16px;
+        color: #94a3b8;
+        margin-bottom: 18px;
+        font-weight: 600;
+    }
+
+    .card-value {
+        font-size: 34px;
+        font-weight: 800;
+    }
+
+    .green {
+        color: #22c55e;
+    }
+
+    .red {
+        color: #ef4444;
+    }
+
+    .blue {
+        color: #38bdf8;
+    }
+
+    .yellow {
+        color: #f59e0b;
+    }
+
+    .purple {
+        color: #a855f7;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .table th {
+        color: #94a3b8;
+        text-align: left;
+        padding: 15px;
+        border-bottom: 1px solid #334155;
+    }
+
+    .table td {
+        padding: 15px;
+        border-bottom: 1px solid #1e293b;
+    }
+</style>
+
+<div class="dashboard-box">
+
+    <h1 class="dashboard-title">
+        📊 FINANCE DASHBOARD
+    </h1>
+
+    <!-- ================= KPI CARDS ================= -->
+
+    <div class="card-grid">
+
+        <div class="finance-card">
+
+            <div class="card-label">
+                💰 Tổng doanh thu tháng
+            </div>
+
+            <div class="card-value green">
+                @ViewBag.TotalRevenue.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="finance-card">
+
+            <div class="card-label">
+                📉 Tổng chi phí
+            </div>
+
+            <div class="card-value red">
+                @ViewBag.TotalExpense.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="finance-card">
+
+            <div class="card-label">
+                👨‍💼 Tổng lương nhân viên
+            </div>
+
+            <div class="card-value blue">
+                @ViewBag.TotalSalary.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="finance-card">
+
+            <div class="card-label">
+                💵 Lợi nhuận thực
+            </div>
+
+            <div class="card-value yellow">
+                @ViewBag.NetProfit.ToString("N0") đ
+            </div>
+
+        </div>
+
+        <div class="finance-card">
+
+            <div class="card-label">
+                🚗 Xe đã bán tháng này
+            </div><div class="card-value purple">
+                @ViewBag.TotalCarsSold
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= CHART ================= -->
+
+    <div style="margin-top:40px">
+
+        <div class="finance-card">
+
+            <h2 style="margin-bottom:25px">
+                📈 PHÂN TÍCH TÀI CHÍNH 12 THÁNG
+            </h2>
+
+            <canvas id="revenueChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ================= TOP SALE ================= -->
+
+    <div style="margin-top:40px">
+
+        <div class="finance-card">
+
+            <h2 style="margin-bottom:25px">
+                🏆 TOP SALE DOANH THU
+            </h2>
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nhân viên
+                        </th>
+
+                        <th>
+                            Doanh thu
+                        </th>
+
+                        <th>
+                            Xe bán
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var sale in ViewBag.TopSales)
+                    {
+                        <tr>
+
+                            <td>
+                                @sale.Name
+                            </td>
+
+                            <td style="color:#22c55e;font-weight:700">
+
+                                @sale.Revenue.ToString("N0") đ
+
+                            </td>
+
+                            <td>
+
+                                @sale.CarsSold xe
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const ctx =
+        document.getElementById(
+            'revenueChart'
+        );
+
+    new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels:
+                @Html.Raw(ViewBag.MonthLabels),
+
+            datasets: [
+
+                {
+
+                    label: 'Doanh thu',
+
+                    data:
+                        @Html.Raw(ViewBag.RevenueData),
+
+                    tension: 0.4,
+
+                    borderWidth: 4,
+
+                    fill: false
+
+                },
+
+                {
+
+                    label: 'Chi phí',
+
+                    data:
+                        @Html.Raw(ViewBag.ExpenseData),
+
+                    tension: 0.4,
+
+                    borderWidth: 4,
+
+                    fill: false
+
+                },
+
+                {
+
+                    label: 'Lợi nhuận',
+
+                    data:
+                        @Html.Raw(ViewBag.ProfitData),
+
+                    tension: 0.4,
+
+                    borderWidth: 4,
+
+                    fill: false
+
+                }
+
+            ]
+        },
+
+        options: {
+
+    responsive: true, plugins: {
+
+    legend: {
+    labels: {
+    color: 'white'
+    }
+    }
+    },
+
+    scales: {
+
+    x: {
+    ticks: {
+    color: 'white'
+    }
+    },
+
+    y: {
+    ticks: {
+    color: 'white'
+    }
+    }
+    }
+    }
+    });
+
+</script>
